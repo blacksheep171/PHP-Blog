@@ -1,5 +1,5 @@
 <?php 
-namespace core;
+namespace app\core;
 class Controller {
 
     /**
@@ -15,10 +15,10 @@ class Controller {
 	/**
 	*  Construct
 	*/
-    // public function __construct() {
-    //     $this->request = $GLOBALS['request'];
-    //     $this->response = $GLOBALS['response'];
-    // }
+    public function __construct() {
+        $this->request = $GLOBALS['request'];
+        $this->response = $GLOBALS['response'];
+    }
 
     public function model($model){
         require_once "./app/models/".$model.".php";

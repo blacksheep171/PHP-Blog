@@ -18,26 +18,80 @@ class UsersModel
     public function __construct(){
         $this->db = new Database;
     }
-    public function findBySql($query){
+    public function findAll($query){
         $this->db->query($query);
 
         $set = $this->db->resultSet();
 
         return $set;
     }
-    public function getName(){
-        return "Hieu lam het";
-    }
-    function tong($x, $y)
-    {
-        return $x + $y;
-    }
+    // public function find($query){
+    //     $this->db->query($query);
+
+    //     $set = $this->db->single();
+
+    //     return $set;
+    // }
     
-    // Get all user
-    public function getUsers(){
+    // Get all users
+    public function index(){
         $query = "SELECT id, fullname, email, gender, avatar, created_at, updated_at FROM " . $this->db_table . "";
-        $data = $this->findBySql($query);
-        
+        $data = $this->findAll($query);
+        return $data;
+
+    }
+    public function create($fullname, $email,$password,$gender, $avatar, $created_at, $updated_at){
+        $query = "INSERT INTO " . $this->db_table . " (fullname, email, password, gender, avatar, created_at, updated_at) VALUES (:fullname, :email, :password, :gender, :avatar , :created_at, :updated_at)";
+        $this->db->query($query);
+        $this->db->bind(':fullname', $fullname);
+        $this->db->bind(':email',$email);
+        $this->db->bind(':password',$password);
+        $this->db->bind(':gender',$gender);
+        $this->db->bind(':avatar',$avatar);
+        $this->db->bind(':created_at',$created_at);
+        $this->db->bind(':updated_at',$updated_at);
+
+        if($this->db->execute()){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    // Get specific user
+    public function getUser($id) {
+        // code here
+        $query = "SELECT id, fullname, email, gender, avatar, created_at, updated_at FROM " . $this->db_table . " WHERE id = :id ";
+        $this->db->query($query);
+        $this->db->bind(':id',$id);
+        $data = $this->db->single();
+        return $data;
+    }
+
+    public function update($id,$fullname, $email,$password,$gender, $avatar, $updated_at){
+        $query = "UPDATE " . $this->db_table . " SET fullname = :fullname, email = :email, password = :password, gender = :gender, avatar = :avatar, updated_at = :updated_at WHERE id = :id "; 
+        $this->db->query($query);
+        $this->db->bind(':fullname', $fullname);
+        $this->db->bind(':email',$email);
+        $this->db->bind(':password',$password);
+        $this->db->bind(':gender',$gender);
+        $this->db->bind(':avatar',$avatar);
+        $this->db->bind(':updated_at',$updated_at);
+        $this->db->bind(':id',$id);
+
+        if($this->db->execute()){
+            return true;
+        } else {
+            return false;
+        } 
+    }
+
+    // delete specific user
+    public function delete($id) {
+        // code here        
+        $query = "DELETE FROM " . $this->db_table . " WHERE id = :id ";
+        $this->db->query($query);
+        $this->db->bind(':id',$id);
+        $data = $this->db->single();
         return $data;
     }
 }

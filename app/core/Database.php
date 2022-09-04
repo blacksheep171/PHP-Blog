@@ -56,15 +56,20 @@ class Database
     public function execute(){
         return $this->stmt->execute();
     }
-    // Get result set as array of objects 
+    // Get result set as array of objects
     public function resultSet(){
         $this->execute();
-        return $this->stmt->fetchAll(PDO::FETCH_OBJ);
+        return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
     }
      // Get result set as array of objects 
      public function single(){
         $this->execute();
-        return $this->stmt->fetch(PDO::FETCH_OBJ);
+        // return $this->stmt->fetch(PDO::FETCH_OBJ);
+        return $this->stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    //bindParams
+    public function bindParam($params,$value){
+        return $this->stmt->bindParam($params,$value);
     }
 }  
 ?>

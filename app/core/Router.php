@@ -100,7 +100,7 @@ class Router {
                     call_user_func_array($action, $params);
                 } 
                 elseif(is_string($action)){
-                    $this->compieRoute($action, $params);
+                    $this->compileRoute($action, $params);
                 }
                 return;
             } else {
@@ -111,7 +111,7 @@ class Router {
         return;
     }
 
-    private function compieRoute($action, $params){
+    private function compileRoute($action, $params){
 
         if(count(explode('@',$action)) !== 2){
             die("router error");

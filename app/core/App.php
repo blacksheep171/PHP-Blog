@@ -14,7 +14,6 @@ class App {
     {   
         new Autoload(self::$config['rootDir']);
         $this->router = new Router;
-
     }
 
     public static function setConfig($config) {
