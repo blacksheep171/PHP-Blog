@@ -7,6 +7,8 @@
     <title>Home page</title>
   </head>
   <body>
-    <?= @$content ?>
+    <?php 
+    echo $data['Number'] ?? null;
+    ?>
   </body>
 </html>

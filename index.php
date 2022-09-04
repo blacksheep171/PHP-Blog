@@ -1,13 +1,16 @@
 <?php
-phpinfo();
-// require_once __DIR__. '/Config/config.php';
-// require_once __DIR__ . '/autoload.php';
-// require_once __DIR__ . '/Route/Router.php';
-// require_once __DIR__ . '/controllers/BaseController.php';
-// $router = new Router;
-// // Add the routes
-// $router->add('index', ['controller' => 'BaseController', 'action' => 'index']);
-// $router->add('{controller}/{action}');
-    
-// $router->dispatch($_SERVER['QUERY_STRING']);
+session_start();
+// require_once "./app/Connection.php";
+require_once "./app/core/App.php";
+require_once "./app/core/Controller.php";
+require_once "./app/core/Database.php";
+$config = require_once "./config/config.php";
+// echo "<pre>";
+// print_r($_GET["url"]);
+// echo "</pre>";
+App::setConfig($config);
+// echo "<pre>";
+// print_r (App::getConfig());
+$myApp = new App(); 
+$myApp->run();
 ?>
