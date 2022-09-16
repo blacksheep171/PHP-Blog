@@ -4,28 +4,34 @@ Router::get('/',function(){
     echo 'hello';
 });
 Router::get('/home', "HomeController@index");
-Router::get('/home/{list}/{page}', "HomeController@get_page");
+
 // Users
 Router::post('/users', "UserController@create");
 Router::get('/users', "UserController@index");
 Router::get('/users/{id}', "UserController@getUser");
-Router::post('/users/update/{id}', "UserController@updates");
+Router::post('/users/update/{id}', "UserController@update");
 Router::delete('/users/{id}', "UserController@delete");
 
+// Posts
+Router::post('/posts', "PostController@createPost");
+Router::get('/posts', "PostController@index");
+Router::get('/posts/{id}', "PostController@getPost");
+Router::post('/posts/update/{id}', "PostController@update");
+Router::delete('/posts/{id}', "PostController@deletePost");
 
-Router::get('/posts', function(){
-    echo "posts page";
-});
+// categories
+Router::post('/categories', "CategoryController@createCat");
+Router::get('/categories', "CategoryController@index");
+Router::get('/categories/{id}', "CategoryController@getCat");
+Router::delete('/categories/{id}', "CategoryController@deleteCat");
+
 Router::get('/comments', function(){
     echo "comments page";
 });
 Router::get('/categories', function(){
     echo "categories page";
 });
-Router::get('/authors/{category}/{id}', function($cat,$page){
-    echo $cat."<br>";
-    echo $page."<br>";
-});
+
 Router::any('*', function(){
     echo "404 page";
 });

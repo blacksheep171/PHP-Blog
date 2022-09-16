@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use core\Controller;
+use app\core\Controller;
 
 class CommentController extends Controller{
    
@@ -12,7 +12,7 @@ class CommentController extends Controller{
     }
     function index()
     {
-        echo "welcome to comment page";
+        // echo "welcome to comment page";
     }
 
 }

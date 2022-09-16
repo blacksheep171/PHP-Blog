@@ -1,7 +1,5 @@
 <?php
 
-// namespace app\core;
-
 class Router {
 
     private static $routers = [];
@@ -23,13 +21,7 @@ class Router {
     private function getRequestURL() {
         $path_info = $this->getPathInfo($_SERVER['REQUEST_URI']);
         return isset($path_info) ? $path_info : '/';
-        // $basePath = \App::getConfig()['basePath'];
-        // $url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
-        // return explode("/",filter_var(trim($url,"/")) );
-
-        // $url = str_replace($this->basePath, '', $url);
-        // $url === "" || empty($url) ? "/" : $url;
-        // return $url;
+        
     }
     
     private function getRequestMethod() {
@@ -82,8 +74,8 @@ class Router {
             } else {
                 $routeParams = explode("/", $url);
                 $requestParams = explode("/", $requestURL);
-                
-                if( count($routeParams) !== count($requestParams) ) {
+                if( count($routeParams) !== count($requestParams)) {
+                    var_dump($routeParams);die();
                     continue;
                 }
 
@@ -114,12 +106,16 @@ class Router {
     private function compileRoute($action, $params){
 
         if(count(explode('@',$action)) !== 2){
+            // var_dump($action);
             die("router error");
         }
         $className = explode('@', $action)[0];
         $methodName = explode('@', $action)[1];
-        
-        $classNameSpace = 'app\\controllers\\'.$className;
+        // var_dump($className);
+        // echo "<pre>";
+        // var_dump($methodName);
+        // echo "<pre>";
+        $classNameSpace = 'App\\controllers\\'.$className;
         if(class_exists($classNameSpace)) {
             $object = new $classNameSpace;
             if(method_exists($classNameSpace, $methodName)){

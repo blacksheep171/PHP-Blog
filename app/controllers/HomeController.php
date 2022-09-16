@@ -14,8 +14,4 @@ class HomeController extends Controller{
         echo "welcome to home page";
     }
 
-    function get_page($list,$page){
-        echo "welcome".$list."number: ".$page;
-    }
-
 }

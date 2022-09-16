@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use core\Controller;
+use app\core\Controller;
 
 class CategoryController extends Controller{
    
@@ -12,7 +12,7 @@ class CategoryController extends Controller{
     }
     function index()
     {
-        echo "welcome to categories page";
+        // echo "welcome to categories page";
     }
 
 }

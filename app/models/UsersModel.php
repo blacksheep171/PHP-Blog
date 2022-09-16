@@ -59,7 +59,6 @@ class UsersModel
     }
     // Get specific user
     public function getUser($id) {
-        // code here
         $query = "SELECT id, fullname, email, gender, avatar, created_at, updated_at FROM " . $this->db_table . " WHERE id = :id ";
         $this->db->query($query);
         $this->db->bind(':id',$id);
@@ -67,12 +66,11 @@ class UsersModel
         return $data;
     }
 
-    public function update($id,$fullname, $email,$password,$gender, $avatar, $updated_at){
-        $query = "UPDATE " . $this->db_table . " SET fullname = :fullname, email = :email, password = :password, gender = :gender, avatar = :avatar, updated_at = :updated_at WHERE id = :id "; 
+    public function update($id,$fullname, $email,$gender, $avatar, $updated_at){
+        $query = "UPDATE " . $this->db_table . " SET fullname = :fullname, email = :email, gender = :gender, avatar = :avatar, updated_at = :updated_at WHERE id = :id "; 
         $this->db->query($query);
         $this->db->bind(':fullname', $fullname);
         $this->db->bind(':email',$email);
-        $this->db->bind(':password',$password);
         $this->db->bind(':gender',$gender);
         $this->db->bind(':avatar',$avatar);
         $this->db->bind(':updated_at',$updated_at);
