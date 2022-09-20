@@ -90,7 +90,7 @@ class PostController extends Controller{
         }
     }
     
-    public function update($id){
+    public function updatePost($id){
        
         $users = $this->model("PostsModel");
         $title = $_POST['title'];

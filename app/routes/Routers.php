@@ -9,15 +9,15 @@ Router::get('/home', "HomeController@index");
 Router::post('/users', "UserController@create");
 Router::get('/users', "UserController@index");
 Router::get('/users/{id}', "UserController@getUser");
-Router::post('/users/update/{id}', "UserController@update");
+Router::post('/users/update/{id}', "UserController@updateUsers");
 Router::delete('/users/{id}', "UserController@delete");
 
 // Posts
 Router::post('/posts', "PostController@createPost");
 Router::get('/posts', "PostController@index");
-Router::get('/posts/{id}', "PostController@getPost");
-Router::post('/posts/update/{id}', "PostController@update");
-Router::delete('/posts/{id}', "PostController@deletePost");
+Router::get('/posts/get_post/{id}', "PostController@getPost");
+Router::post('/posts/update/{id}', "PostController@updatePost");
+Router::delete('/posts/delete_post/{id}', "PostController@deletePost");
 
 // categories
 Router::post('/categories', "CategoryController@createCat");

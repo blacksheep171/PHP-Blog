@@ -71,8 +71,8 @@ class UserController extends Controller
         }
     }
 
-    public function update($id){
-        // if(isset($_POST['id']) && isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['gender']) && isset($_POST['avatar']) && isset($_POST['updated_at'])){
+    public function updateUsers($id){
+       
         $users = $this->model("UsersModel");
         $fullname = $_POST['fullname'];
         $email = $_POST['email'];
@@ -80,7 +80,7 @@ class UserController extends Controller
         $avatar = $_POST['avatar'];
         $updated_at = date('Y-m-d H:i:s');
 
-        $data = $users->update($id,$fullname, $email,$gender, $avatar, $updated_at);
+        $data = $users->update($id, $fullname, $email, $gender, $avatar, $updated_at);
         if($data){
             http_response_code(200);
             echo json_encode(

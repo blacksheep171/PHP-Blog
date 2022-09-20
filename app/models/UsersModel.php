@@ -25,14 +25,7 @@ class UsersModel
 
         return $set;
     }
-    // public function find($query){
-    //     $this->db->query($query);
 
-    //     $set = $this->db->single();
-
-    //     return $set;
-    // }
-    
     // Get all users
     public function index(){
         $query = "SELECT id, fullname, email, gender, avatar, created_at, updated_at FROM " . $this->db_table . "";
@@ -66,15 +59,24 @@ class UsersModel
         return $data;
     }
 
-    public function update($id,$fullname, $email,$gender, $avatar, $updated_at){
+    public function update($id, $fullname, $email, $gender, $avatar, $updated_at){
         $query = "UPDATE " . $this->db_table . " SET fullname = :fullname, email = :email, gender = :gender, avatar = :avatar, updated_at = :updated_at WHERE id = :id "; 
         $this->db->query($query);
-        $this->db->bind(':fullname', $fullname);
-        $this->db->bind(':email',$email);
-        $this->db->bind(':gender',$gender);
-        $this->db->bind(':avatar',$avatar);
-        $this->db->bind(':updated_at',$updated_at);
         $this->db->bind(':id',$id);
+
+        if($fullname != ""){
+            $this->db->bind(':fullname', $fullname);
+        }
+        if($email != ""){
+            $this->db->bind(':email',$email);
+        }
+        if($gender != ""){
+            $this->db->bind(':gender',$gender);
+        }
+        if($avatar != ""){
+            $this->db->bind(':avatar',$avatar);
+        }
+        $this->db->bind(':updated_at',$updated_at);
 
         if($this->db->execute()){
             return true;

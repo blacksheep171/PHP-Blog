@@ -19,8 +19,8 @@ class Router {
     }
 
     private function getRequestURL() {
-        $path_info = $this->getPathInfo($_SERVER['REQUEST_URI']);
-        return isset($path_info) ? $path_info : '/';
+        $url = $this->getPathInfo($_SERVER['REQUEST_URI']);
+        return isset($url) ? $url : '/';
         
     }
     
@@ -74,11 +74,15 @@ class Router {
             } else {
                 $routeParams = explode("/", $url);
                 $requestParams = explode("/", $requestURL);
+                // compare count of routes and request params 
                 if( count($routeParams) !== count($requestParams)) {
-                    var_dump($routeParams);die();
                     continue;
                 }
-
+                //compare controllers
+                if($routeParams[1] !== $requestParams[1]) {
+                    continue;
+                }
+               
                 foreach($routeParams as $key => $value) {
                     if( preg_match('/^{\w+}$/',$value)) {
                         $params[] = $requestParams[$key];
@@ -106,15 +110,10 @@ class Router {
     private function compileRoute($action, $params){
 
         if(count(explode('@',$action)) !== 2){
-            // var_dump($action);
             die("router error");
         }
         $className = explode('@', $action)[0];
         $methodName = explode('@', $action)[1];
-        // var_dump($className);
-        // echo "<pre>";
-        // var_dump($methodName);
-        // echo "<pre>";
         $classNameSpace = 'App\\controllers\\'.$className;
         if(class_exists($classNameSpace)) {
             $object = new $classNameSpace;

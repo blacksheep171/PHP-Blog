@@ -7,8 +7,6 @@
     <title>Home page</title>
   </head>
   <body>
-    <?php 
-    echo $data['Number'] ?? null;
-    ?>
+      <h1>Welcome to my project mini blog</h1>
   </body>
 </html>
