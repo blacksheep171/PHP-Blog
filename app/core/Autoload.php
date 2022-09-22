@@ -16,7 +16,6 @@ class Autoload {
             $className = end($tmp);
             $pathName = str_replace($className,'',$class);
             // print_r($pathName);die();
-
             $filePath = $this->rootDir.'\\'.$pathName.$className.'.php';
             // print_r($filePath);die();
 

@@ -23,10 +23,10 @@ class UsersModel
         $set = $this->db->resultSet();
         return $set;
     }
-    
+
     // find current data by id
     public function find($id) {
-        $query = "SELECT * FROM " . $this->db_table . " WHERE id = :id ";
+        $query = "SELECT * FROM " . $this->db_table . " WHERE `id` = :id ";
         $this->db->query($query);
         $this->db->bind(':id',$id);
         $data = $this->db->single($query); 
@@ -34,14 +34,14 @@ class UsersModel
     }
     // Get all users
     public function index(){
-        $query = "SELECT id, fullname, email, gender, avatar, created_at, updated_at FROM " . $this->db_table . "";
+        $query = "SELECT `id`, `fullname`, `email`, `gender`, `avatar`, `created_at`, `updated_at` FROM " . $this->db_table . "";
         $data = $this->findAll($query);
         return $data;
-
     }
+
     // create new specific users
     public function create($fullname, $email,$password,$gender, $avatar, $created_at, $updated_at){
-        $query = "INSERT INTO " . $this->db_table . " (fullname, email, password, gender, avatar, created_at, updated_at) VALUES (:fullname, :email, :password, :gender, :avatar , :created_at, :updated_at)";
+        $query = "INSERT INTO " . $this->db_table . " (`fullname`, `email`,`password`, `gender`, `avatar`, `created_at`, `updated_at`) VALUES (:fullname, :email, :password, :gender, :avatar , :created_at, :updated_at)";
         $this->db->query($query);
         $this->db->bind(':fullname', $fullname);
         $this->db->bind(':email',$email);
@@ -59,7 +59,7 @@ class UsersModel
     }
     // Get specific user
     public function getUser($id) {
-        $query = "SELECT id, fullname, email, gender, avatar, created_at, updated_at FROM " . $this->db_table . " WHERE id = :id ";
+        $query = "SELECT `id`, `fullname`, `email`, `gender`, `avatar`, `created_at`, `updated_at` FROM " . $this->db_table . " WHERE `id` = :id ";
         $this->db->query($query);
         $this->db->bind(':id',$id);
         $data = $this->db->single();
@@ -67,7 +67,7 @@ class UsersModel
     }
 
     public function update($id, $fullname, $email, $gender, $avatar, $updated_at){
-        $query = "UPDATE " . $this->db_table . " SET fullname = :fullname, email = :email, gender = :gender, avatar = :avatar, updated_at = :updated_at WHERE id = :id "; 
+        $query = "UPDATE " . $this->db_table . " SET `fullname` = :fullname, `email` = :email, `gender` = :gender, `avatar` = :avatar, `updated_at` = :updated_at WHERE `id` = :id "; 
         $this->db->query($query);
         $this->db->bind(':id',$id);
 
@@ -94,7 +94,7 @@ class UsersModel
 
     // delete specific user
     public function delete($id) {    
-        $query = "DELETE FROM " . $this->db_table . " WHERE id = :id ";
+        $query = "DELETE FROM " . $this->db_table . " WHERE `id` = :id ";
         $this->db->query($query);
         $this->db->bind(':id',$id);
         $data = $this->db->single();
@@ -102,9 +102,8 @@ class UsersModel
         return $data;
     }
 
-
     public function changePass($id, $password){
-        $query = "UPDATE ". $this->db_table ." SET password = :password WHERE id = :id";
+        $query = "UPDATE ". $this->db_table ." SET `password` = :password WHERE `id` = :id";
         $this->db->query($query);
         $this->db->bind(':id',$id);
         if($password !== ''){

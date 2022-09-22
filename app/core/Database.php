@@ -61,11 +61,12 @@ class Database
         // return $this->stmt->fetchAll(PDO::FETCH_OBJ);
         return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-     // Get result set as array of objects 
+     // Get single result 
      public function single(){
         $this->execute();
         // return $this->stmt->fetch(PDO::FETCH_OBJ);
         return $this->stmt->fetch(PDO::FETCH_ASSOC);
     }
+
 }  
 ?>

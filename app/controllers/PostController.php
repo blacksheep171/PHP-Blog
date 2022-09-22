@@ -37,7 +37,7 @@ class PostController extends Controller{
             http_response_code(500);
             return json_encode(
                 [   "success" => false,
-                    "message" => "Users could not be created.",
+                    "message" => "post could not be created.",
                     "code" => 500,
                     "data" => null
             ]);
@@ -45,6 +45,7 @@ class PostController extends Controller{
     }
 
     public function index(){
+        
         $post = $this->model("PostsModel");
         $data = $post->index();
         if(count($data) > 0){
@@ -58,8 +59,8 @@ class PostController extends Controller{
         } else {
             http_response_code(404);
             echo json_encode(
-                [   "success" => true,
-                    "message" => "success",
+                [   "success" => false,
+                    "message" => "not found",
                     "code" => 200,
                     "data" => null
             ]);
@@ -127,9 +128,9 @@ class PostController extends Controller{
                         "data" => null
                 ]);
             }
-        }   
+        }
     }
-
+    
     public function deletePost($id){
         $post = $this->model("PostsModel");
         $old_data = $post->find($id);

@@ -23,14 +23,12 @@ Router::delete('/posts/delete/{id}', "PostController@deletePost");
 // categories
 Router::post('/categories', "CategoryController@createCat");
 Router::get('/categories', "CategoryController@index");
-Router::get('/categories/{id}', "CategoryController@getCat");
-Router::delete('/categories/{id}', "CategoryController@deleteCat");
+Router::get('/categories/get_category/{id}', "CategoryController@getCat");
+Router::post('/categories/update/{id}', "CategoryController@updateCat");
+Router::delete('/categories/delete/{id}', "CategoryController@deleteCat");
 
 Router::get('/comments', function(){
     echo "comments page";
-});
-Router::get('/categories', function(){
-    echo "categories page";
 });
 
 Router::any('*', function(){

@@ -39,7 +39,7 @@ class UserController extends Controller
     }
     public function create(){
         $users = $this->model("UsersModel");
-        $current_data = $users->index();
+        
         $fullname = $_POST['fullname'];
         $email = $_POST['email'];
         $password = md5($_POST['password']);
@@ -132,6 +132,7 @@ class UserController extends Controller
     }
 
     public function delete($id){
+
         $users = $this->model("UsersModel");
         $old_data = $users->find($id);
         if(empty($old_data)){

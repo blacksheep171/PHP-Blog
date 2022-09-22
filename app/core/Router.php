@@ -21,7 +21,6 @@ class Router {
     private function getRequestURL() {
         $pathInfo = $this->getPathInfo($_SERVER['REQUEST_URI']);
         return isset($pathInfo) ? $pathInfo : '/';
-        
     }
     
     private function getRequestMethod() {
@@ -29,21 +28,26 @@ class Router {
         return $method;
     }
 
-    private static function addRouter($method,$url, $action) {
+    private static function addRouter($method, $url, $action) {
         self::$routers[] = [$method,$url,$action];
     }
+
     public static function get($url,$action) {
         self::addRouter('GET',$url, $action);
     }
+
     public static function post($url,$action) {
         self::addRouter('POST',$url, $action);
     }
+
     public static function put($url,$action) {
         self::addRouter('PUT',$url, $action);
     }
+
     public static function delete($url,$action) {
         self::addRouter('DELETE',$url, $action);
     }
+
     public static function any($url,$action) {
         self::addRouter('GET|POST|PUT|DELETE',$url, $action);
     }
@@ -79,12 +83,12 @@ class Router {
                     continue;
                 }
                 //compare controllers
-                if(($routeParams[1] !== $requestParams[1]) || ($routeParams[2] !== $requestParams[2])) {
+                if(($routeParams[1] !== $requestParams[1])) {
                     continue;
                 }
-                // if($routeParams[2] !== $requestParams[2]) {
-                //     continue;
-                // }
+                if($routeParams[2] !== $requestParams[2]) {
+                    continue;
+                }
 
                 foreach($routeParams as $key => $value) {
                     if( preg_match('/^{\w+}$/',$value)) {
@@ -105,13 +109,11 @@ class Router {
             } else {
                 continue;
             }
-            
         }
         return;
     }
 
     private function compileRoute($action, $params){
-
         if(count(explode('@',$action)) !== 2){
             die("router error");
         }
