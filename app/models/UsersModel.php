@@ -20,12 +20,18 @@ class UsersModel
     }
     public function findAll($query){
         $this->db->query($query);
-
         $set = $this->db->resultSet();
-
         return $set;
     }
-
+    
+    // find current data by id
+    public function find($id) {
+        $query = "SELECT * FROM " . $this->db_table . " WHERE id = :id ";
+        $this->db->query($query);
+        $this->db->bind(':id',$id);
+        $data = $this->db->single($query); 
+        return $data;
+    }
     // Get all users
     public function index(){
         $query = "SELECT id, fullname, email, gender, avatar, created_at, updated_at FROM " . $this->db_table . "";
@@ -33,6 +39,7 @@ class UsersModel
         return $data;
 
     }
+    // create new specific users
     public function create($fullname, $email,$password,$gender, $avatar, $created_at, $updated_at){
         $query = "INSERT INTO " . $this->db_table . " (fullname, email, password, gender, avatar, created_at, updated_at) VALUES (:fullname, :email, :password, :gender, :avatar , :created_at, :updated_at)";
         $this->db->query($query);
@@ -86,13 +93,28 @@ class UsersModel
     }
 
     // delete specific user
-    public function delete($id) {
-        // code here        
+    public function delete($id) {    
         $query = "DELETE FROM " . $this->db_table . " WHERE id = :id ";
         $this->db->query($query);
         $this->db->bind(':id',$id);
         $data = $this->db->single();
+
         return $data;
+    }
+
+
+    public function changePass($id, $password){
+        $query = "UPDATE ". $this->db_table ." SET password = :password WHERE id = :id";
+        $this->db->query($query);
+        $this->db->bind(':id',$id);
+        if($password !== ''){
+            $this->db->bind(':password',$password);
+        }
+        if($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 ?>

@@ -19,8 +19,8 @@ class Router {
     }
 
     private function getRequestURL() {
-        $url = $this->getPathInfo($_SERVER['REQUEST_URI']);
-        return isset($url) ? $url : '/';
+        $pathInfo = $this->getPathInfo($_SERVER['REQUEST_URI']);
+        return isset($pathInfo) ? $pathInfo : '/';
         
     }
     
@@ -79,10 +79,13 @@ class Router {
                     continue;
                 }
                 //compare controllers
-                if($routeParams[1] !== $requestParams[1]) {
+                if(($routeParams[1] !== $requestParams[1]) || ($routeParams[2] !== $requestParams[2])) {
                     continue;
                 }
-               
+                // if($routeParams[2] !== $requestParams[2]) {
+                //     continue;
+                // }
+
                 foreach($routeParams as $key => $value) {
                     if( preg_match('/^{\w+}$/',$value)) {
                         $params[] = $requestParams[$key];

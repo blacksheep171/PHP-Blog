@@ -45,7 +45,6 @@ class PostController extends Controller{
     }
 
     public function index(){
-        
         $post = $this->model("PostsModel");
         $data = $post->index();
         if(count($data) > 0){
@@ -68,8 +67,8 @@ class PostController extends Controller{
     }
 
     public function getPost($id){     
-        $users = $this->model("PostsModel");
-        $data = $users->getPost($id);
+        $post = $this->model("PostsModel");
+        $data = $post->getPost($id);
         
         if(empty($data)){
             http_response_code(404);
@@ -92,37 +91,58 @@ class PostController extends Controller{
     
     public function updatePost($id){
        
-        $users = $this->model("PostsModel");
-        $title = $_POST['title'];
-        $slug = $_POST['slug'];
-        $summary = $_POST['summary'];
-        $content = $_POST['content'];
-        $user_id = $_POST['user_id'];
-        $updated_at = date('Y-m-d H:i:s');
-
-        $data = $users->update($id,$title, $slug,$summary,$content, $user_id, $updated_at);
-        if($data){
-            http_response_code(200);
-            echo json_encode(
-                [   "success" => true,
-                    "message" => "updated successfully.",
-                    "code" => 200,
-                    "data" => $data
-            ]);
-        } else{
-            http_response_code(500);
+        $post = $this->model("PostsModel");
+        $old_data = $post->find($id);
+        if(empty($old_data)){
+            http_response_code(404);
             echo json_encode(
                 [   "success" => false,
-                    "message" => "users can not updated.",
-                    "code" => 500,
+                    "message" => "not found",
+                    "code" => 404,
                     "data" => null
             ]);
-        }
+        } else {
+            $title = $_POST['title'];
+            $slug = $_POST['slug'];
+            $summary = $_POST['summary'];
+            $content = $_POST['content'];
+            $user_id = $_POST['user_id'];
+            $updated_at = date('Y-m-d H:i:s');
+
+            $data = $post->update($id,$title, $slug,$summary,$content, $user_id, $updated_at);
+            if($data){
+                http_response_code(200);
+                echo json_encode(
+                    [   "success" => true,
+                        "message" => "updated successfully.",
+                        "code" => 200,
+                        "data" => $data
+                ]);
+            } else{
+                http_response_code(500);
+                echo json_encode(
+                    [   "success" => false,
+                        "message" => "Post can not updated.",
+                        "code" => 500,
+                        "data" => null
+                ]);
+            }
+        }   
     }
+
     public function deletePost($id){
-        // code here        
-        $users = $this->model("PostsModel");
-        $users->deletePost($id);
+        $post = $this->model("PostsModel");
+        $old_data = $post->find($id);
+        if(empty($old_data)){
+            http_response_code(404);
+            echo json_encode(
+                [   "success" => false,
+                    "message" => "not found",
+                    "code" => 404,
+                    "data" => null
+            ]);
+        } else {
+            $post->deletePost($id);
             http_response_code(200);
             echo json_encode(
                 [   "success" => true,
@@ -130,5 +150,6 @@ class PostController extends Controller{
                     "code" => 200,
                     "data" => null
             ]);
+        }
     }
 }
