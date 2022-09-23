@@ -16,7 +16,7 @@ class UserController extends Controller
     }
 
     public function index(){
-        $users = $this->model("UsersModel");
+        $users = $this->model("User");
         $data = $users->index();
     
         if(count($data) > 0){
@@ -31,18 +31,18 @@ class UserController extends Controller
             http_response_code(404);
             echo json_encode(
                 [   "success" => true,
-                    "message" => "success",
-                    "code" => 200,
+                    "message" => "not found",
+                    "code" => 404,
                     "data" => null
             ]);
         }
     }
-    public function create(){
-        $users = $this->model("UsersModel");
+    public function createUser(){
+        $users = $this->model("User");
         
         $fullname = $_POST['fullname'];
         $email = $_POST['email'];
-        $password = md5($_POST['password']);
+        $password = password_hash(($_POST['password']), PASSWORD_DEFAULT);
         $gender = $_POST['gender'];
         $avatar = $_POST['avatar'];
         $created_at = date('Y-m-d H:i:s');
@@ -69,8 +69,30 @@ class UserController extends Controller
         }
     }
 
-    public function updateUsers($id){
-        $users = $this->model("UsersModel");
+    public function getUser($id) {
+        $users = $this->model("User");
+        $data = $users->get($id);
+        
+        if(empty($data)){
+            http_response_code(404);
+            echo json_encode(
+                [   "success" => false,
+                    "message" => "not found",
+                    "code" => 404,
+                    "data" => null
+            ]);
+        } else {
+            http_response_code(200);
+            echo json_encode(
+                [   "success" => true,
+                    "message" => "success",
+                    "code" => 200,
+                    "data" => $data
+            ]);
+        }
+    }
+    public function updateUser($id){
+        $users = $this->model("User");
         $old_data = $users->find($id);
         if(empty($old_data)){
             http_response_code(404);
@@ -108,32 +130,9 @@ class UserController extends Controller
         }
     }
 
-    public function getUser($id) {
-        $users = $this->model("UsersModel");
-        $data = $users->getUser($id);
-        
-        if(empty($data)){
-            http_response_code(404);
-            echo json_encode(
-                [   "success" => false,
-                    "message" => "not found",
-                    "code" => 404,
-                    "data" => null
-            ]);
-        } else {
-            http_response_code(200);
-            echo json_encode(
-                [   "success" => true,
-                    "message" => "success",
-                    "code" => 200,
-                    "data" => $data
-            ]);
-        }
-    }
+    public function deleteUser($id){
 
-    public function delete($id){
-
-        $users = $this->model("UsersModel");
+        $users = $this->model("User");
         $old_data = $users->find($id);
         if(empty($old_data)){
             http_response_code(404);
@@ -155,8 +154,8 @@ class UserController extends Controller
         }
     }
 
-    public function changePassword($id){
-        $users = $this->model("UsersModel");
+    public function changeUserPassword($id){
+        $users = $this->model("User");
         $password = isset($_POST['password']) ? password_hash(($_POST['password']), PASSWORD_DEFAULT) : null;
         $old_data = $users->find($id);
         if(empty($old_data)){
@@ -168,7 +167,7 @@ class UserController extends Controller
                     "data" => null
             ]);
         } else {
-            $data = $users->changePass($id,$password);
+            $data = $users->changePassword($id,$password);
             if($data){
                 http_response_code(200);
                 echo json_encode(

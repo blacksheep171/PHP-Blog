@@ -6,12 +6,12 @@ Router::get('/',function(){
 Router::get('/home', "HomeController@index");
 
 // Users
-Router::post('/users', "UserController@create");
+Router::post('/users', "UserController@createUser");
 Router::get('/users', "UserController@index");
 Router::get('/users/get_user/{id}', "UserController@getUser");
-Router::post('/users/update/{id}', "UserController@updateUsers");
-Router::delete('/users/delete/{id}', "UserController@delete");
-Router::post('/users/change_password/{id}', "UserController@changePassword");
+Router::post('/users/update/{id}', "UserController@updateUser");
+Router::delete('/users/delete/{id}', "UserController@deleteUser");
+Router::post('/users/change_password/{id}', "UserController@changeUserPassword");
 
 // Posts
 Router::post('/posts', "PostController@createPost");
@@ -20,16 +20,19 @@ Router::get('/posts/get_post/{id}', "PostController@getPost");
 Router::post('/posts/update/{id}', "PostController@updatePost");
 Router::delete('/posts/delete/{id}', "PostController@deletePost");
 
-// categories
-Router::post('/categories', "CategoryController@createCat");
+// Categories
+Router::post('/categories', "CategoryController@createCategory");
 Router::get('/categories', "CategoryController@index");
-Router::get('/categories/get_category/{id}', "CategoryController@getCat");
-Router::post('/categories/update/{id}', "CategoryController@updateCat");
-Router::delete('/categories/delete/{id}', "CategoryController@deleteCat");
+Router::get('/categories/get_category/{id}', "CategoryController@getCategory");
+Router::post('/categories/update_category/{id}', "CategoryController@updateCategory");
+Router::delete('/categories/delete/{id}', "CategoryController@deleteCategory");
 
-Router::get('/comments', function(){
-    echo "comments page";
-});
+// Comments
+Router::post('/comments', "CommentController@createComment");
+Router::get('/comments', "CommentController@index");
+Router::get('/comments/get_comment/{id}', "CommentController@getComment");
+Router::post('/comments/update_comment/{id}', "CommentController@updateComment");
+Router::delete('/comments/delete/{id}', "CommentController@deleteComment");
 
 Router::any('*', function(){
     echo "404 page";

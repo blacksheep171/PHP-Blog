@@ -1,6 +1,6 @@
 <?php 
 
-class PostsModel {
+class Post {
 
     private $db;
     private $db_table = "posts";
@@ -23,13 +23,15 @@ class PostsModel {
 
         return $set;
     }
+    
     // Get all posts
     public function index(){
         $query = "SELECT `id`, `title`,`summary`, `content`, `created_at`, `updated_at` FROM " . $this->db_table . "";
         $data = $this->findAll($query);
         return $data;
     }
-    // find current data by id
+
+    // Find current data by id
     public function find($id) {
         $query = "SELECT * FROM " . $this->db_table . " WHERE `id` = :id ";
         $this->db->query($query);
@@ -37,8 +39,9 @@ class PostsModel {
         $data = $this->db->single($query); 
         return $data;
     }
+
     // Create specific post
-    public function createPost($title,$slug, $summary,$content,$user_id,$created_at,$updated_at){
+    public function create($title,$slug, $summary,$content,$user_id,$created_at,$updated_at){
         $query = "INSERT INTO " . $this->db_table . " (`title`, `slug`, `summary`, `content`, `user_id`, `created_at`, `updated_at`) VALUES (:title, :slug, :summary, :content, :user_id, :created_at, :updated_at)";
         $this->db->query($query);
         $this->db->bind(':title', $title);
@@ -56,8 +59,8 @@ class PostsModel {
         }
     }
 
-     // Get specific post
-     public function getPost($id) {
+    // Get specific post
+     public function get($id) {
         $query = "SELECT `id`, `title`, `summary`, `content`, `user_id`, `created_at`, `updated_at` FROM " . $this->db_table . " WHERE `id` = :id ";
         $this->db->query($query);
         $this->db->bind(':id',$id);
@@ -92,8 +95,9 @@ class PostsModel {
             return false;
         } 
     }
-    // delete specific post
-    public function deletePost($id) {
+    
+    // Delete specific post
+    public function delete($id) {
         $query = "DELETE FROM " . $this->db_table . " WHERE `id` = :id ";
         $this->db->query($query);
         $this->db->bind(':id',$id);

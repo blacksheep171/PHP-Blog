@@ -1,6 +1,6 @@
 <?php
 
-class UsersModel
+class User
 {   
     // Connection
     private $db;
@@ -14,17 +14,19 @@ class UsersModel
     public $avatar;
     public $created_at;
     public $updated_at;
+
     // Db connection
     public function __construct(){
         $this->db = new Database;
     }
+
     public function findAll($query){
         $this->db->query($query);
         $set = $this->db->resultSet();
         return $set;
     }
 
-    // find current data by id
+    // Find current data by id
     public function find($id) {
         $query = "SELECT * FROM " . $this->db_table . " WHERE `id` = :id ";
         $this->db->query($query);
@@ -32,6 +34,7 @@ class UsersModel
         $data = $this->db->single($query); 
         return $data;
     }
+
     // Get all users
     public function index(){
         $query = "SELECT `id`, `fullname`, `email`, `gender`, `avatar`, `created_at`, `updated_at` FROM " . $this->db_table . "";
@@ -39,7 +42,7 @@ class UsersModel
         return $data;
     }
 
-    // create new specific users
+    // Create new specific users
     public function create($fullname, $email,$password,$gender, $avatar, $created_at, $updated_at){
         $query = "INSERT INTO " . $this->db_table . " (`fullname`, `email`,`password`, `gender`, `avatar`, `created_at`, `updated_at`) VALUES (:fullname, :email, :password, :gender, :avatar , :created_at, :updated_at)";
         $this->db->query($query);
@@ -57,8 +60,9 @@ class UsersModel
             return false;
         }
     }
+
     // Get specific user
-    public function getUser($id) {
+    public function get($id) {
         $query = "SELECT `id`, `fullname`, `email`, `gender`, `avatar`, `created_at`, `updated_at` FROM " . $this->db_table . " WHERE `id` = :id ";
         $this->db->query($query);
         $this->db->bind(':id',$id);
@@ -66,6 +70,7 @@ class UsersModel
         return $data;
     }
 
+    // Update the specific user
     public function update($id, $fullname, $email, $gender, $avatar, $updated_at){
         $query = "UPDATE " . $this->db_table . " SET `fullname` = :fullname, `email` = :email, `gender` = :gender, `avatar` = :avatar, `updated_at` = :updated_at WHERE `id` = :id "; 
         $this->db->query($query);
@@ -92,7 +97,7 @@ class UsersModel
         } 
     }
 
-    // delete specific user
+    // Delete the specific user
     public function delete($id) {    
         $query = "DELETE FROM " . $this->db_table . " WHERE `id` = :id ";
         $this->db->query($query);
@@ -102,7 +107,8 @@ class UsersModel
         return $data;
     }
 
-    public function changePass($id, $password){
+    // Change user password
+    public function changePassword($id, $password){
         $query = "UPDATE ". $this->db_table ." SET `password` = :password WHERE `id` = :id";
         $this->db->query($query);
         $this->db->bind(':id',$id);

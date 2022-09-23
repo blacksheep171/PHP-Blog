@@ -11,8 +11,30 @@ class PostController extends Controller{
         header('Content-type: application/json');
     }
 
+    public function index(){
+        $post = $this->model("Post");
+        $data = $post->index();
+        if(count($data) > 0){
+            http_response_code(200);
+            echo json_encode(
+                [   "success" => true,
+                    "message" => "success",
+                    "code" => 200,
+                    "data" => $data
+            ]);
+        } else {
+            http_response_code(404);
+            echo json_encode(
+                [   "success" => false,
+                    "message" => "not found",
+                    "code" => 200,
+                    "data" => null
+            ]);
+        }
+    }
+
     public function createPost(){
-        $post = $this->model("PostsModel");
+        $post = $this->model("Post");
         if(isset($_POST['title']) && isset($_POST['slug']) && isset($_POST['summary']) && isset($_POST['content']) && isset($_POST['user_id']) && isset($_POST['user_id'])){
             $title = $_POST['title'];
             $slug = $_POST['slug'];
@@ -22,7 +44,7 @@ class PostController extends Controller{
             $created_at = date('Y-m-d H:i:s');
             $updated_at = date('Y-m-d H:i:s');
 
-            $data = $post->createPost($title, $slug, $summary,$content, $user_id, $created_at, $updated_at);
+            $data = $post->create($title, $slug, $summary,$content, $user_id, $created_at, $updated_at);
 
             if($data){
                 http_response_code(201);
@@ -44,32 +66,9 @@ class PostController extends Controller{
         }
     }
 
-    public function index(){
-        
-        $post = $this->model("PostsModel");
-        $data = $post->index();
-        if(count($data) > 0){
-            http_response_code(200);
-            echo json_encode(
-                [   "success" => true,
-                    "message" => "success",
-                    "code" => 200,
-                    "data" => $data
-            ]);
-        } else {
-            http_response_code(404);
-            echo json_encode(
-                [   "success" => false,
-                    "message" => "not found",
-                    "code" => 200,
-                    "data" => null
-            ]);
-        }
-    }
-
     public function getPost($id){     
-        $post = $this->model("PostsModel");
-        $data = $post->getPost($id);
+        $post = $this->model("Post");
+        $data = $post->get($id);
         
         if(empty($data)){
             http_response_code(404);
@@ -92,7 +91,7 @@ class PostController extends Controller{
     
     public function updatePost($id){
        
-        $post = $this->model("PostsModel");
+        $post = $this->model("Post");
         $old_data = $post->find($id);
         if(empty($old_data)){
             http_response_code(404);
@@ -132,7 +131,7 @@ class PostController extends Controller{
     }
     
     public function deletePost($id){
-        $post = $this->model("PostsModel");
+        $post = $this->model("Post");
         $old_data = $post->find($id);
         if(empty($old_data)){
             http_response_code(404);
@@ -143,7 +142,7 @@ class PostController extends Controller{
                     "data" => null
             ]);
         } else {
-            $post->deletePost($id);
+            $post->delete($id);
             http_response_code(200);
             echo json_encode(
                 [   "success" => true,
