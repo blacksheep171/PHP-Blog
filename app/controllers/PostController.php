@@ -1,8 +1,9 @@
 <?php
 
-namespace app\controllers;
+namespace App\Controllers;
 
-use app\core\Controller;
+use App\Core\Controller;
+use App\Models\Post as Post;
 
 class PostController extends Controller{
    
@@ -12,8 +13,10 @@ class PostController extends Controller{
     }
 
     public function index(){
-        $post = $this->model("Post");
+
+        $post = new Post;
         $data = $post->index();
+
         if(count($data) > 0){
             http_response_code(200);
             echo json_encode(
@@ -34,7 +37,9 @@ class PostController extends Controller{
     }
 
     public function createPost(){
-        $post = $this->model("Post");
+
+        $post = new Post;
+        
         if(isset($_POST['title']) && isset($_POST['slug']) && isset($_POST['summary']) && isset($_POST['content']) && isset($_POST['user_id']) && isset($_POST['user_id'])){
             $title = $_POST['title'];
             $slug = $_POST['slug'];
@@ -67,7 +72,7 @@ class PostController extends Controller{
     }
 
     public function getPost($id){     
-        $post = $this->model("Post");
+        $post = new Post;
         $data = $post->get($id);
         
         if(empty($data)){
@@ -91,8 +96,9 @@ class PostController extends Controller{
     
     public function updatePost($id){
        
-        $post = $this->model("Post");
+        $post = new Post;
         $old_data = $post->find($id);
+
         if(empty($old_data)){
             http_response_code(404);
             echo json_encode(
@@ -109,7 +115,7 @@ class PostController extends Controller{
             $user_id = $_POST['user_id'];
             $updated_at = date('Y-m-d H:i:s');
 
-            $data = $post->update($id,$title, $slug,$summary,$content, $user_id, $updated_at);
+            $data = $post->update($id, $title, $slug, $summary, $content, $user_id, $updated_at);
             if($data){
                 http_response_code(200);
                 echo json_encode(
@@ -131,8 +137,10 @@ class PostController extends Controller{
     }
     
     public function deletePost($id){
-        $post = $this->model("Post");
+
+        $post = new Post;
         $old_data = $post->find($id);
+
         if(empty($old_data)){
             http_response_code(404);
             echo json_encode(

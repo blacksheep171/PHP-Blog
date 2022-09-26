@@ -1,6 +1,9 @@
 <?php 
+namespace App\Models;
 
-class Comment {
+use App\Core\Model as Model;
+
+class Comment extends Model{
 
     private $db_table = "comments";
 
@@ -11,39 +14,27 @@ class Comment {
     public $post_id;
     public $created_at;
     public $updated_at;
-  
-    public function __construct(){
-        $this->db = new Database;
-    }
-
-    public function findAll($query){
-        $this->db->query($query);
-
-        $set = $this->db->resultSet();
-
-        return $set;
-    }
 
     // Get all comments
     public function index(){
-        $query = "SELECT * FROM " . $this->db_table . "";
-        $data = $this->findAll($query);
+        $sql = "SELECT * FROM " . $this->db_table . "";
+        $data = $this->findAll($sql);
         return $data;
     }
 
     // Find current data by id
     public function find($id) {
-        $query = "SELECT * FROM " . $this->db_table . " WHERE `id` = :id ";
-        $this->db->query($query);
+        $sql = "SELECT * FROM " . $this->db_table . " WHERE `id` = :id ";
+        $this->db->query($sql);
         $this->db->bind(':id',$id);
-        $data = $this->db->single($query); 
+        $data = $this->db->single($sql); 
         return $data;
     }
 
     // Create new comment
     public function create($comment, $reply, $user_id, $post_id, $created_at, $updated_at){
-        $query = "INSERT INTO " . $this->db_table . " (`comment`, `reply`,`user_id`,`post_id`,`created_at`,`updated_at`  ) VALUES (:comment, :reply,:user_id,:post_id,:created_at,:updated_at)";
-        $this->db->query($query);               
+        $sql = "INSERT INTO " . $this->db_table . " (`comment`, `reply`,`user_id`,`post_id`,`created_at`,`updated_at`  ) VALUES (:comment, :reply,:user_id,:post_id,:created_at,:updated_at)";
+        $this->db->query($sql);               
         $this->db->bind(':comment', $comment);
         $this->db->bind(':reply', $reply);
         $this->db->bind(':user_id', $user_id);
@@ -52,16 +43,18 @@ class Comment {
         $this->db->bind(':updated_at', $updated_at);
 
         if($this->db->execute()){
-            return true;
+            $insert_id = $this->db->lastInsertId();
+            $data = $this->get($insert_id);
+            return $data;
         } else {
-            return false;
+            return null;
         }
     }
     
     // Get the specific comment
     public function get($id) {
-        $query = "SELECT `comment`,`reply`,`user_id`,`post_id`,`created_at`,`updated_at` FROM " . $this->db_table . " WHERE `id` = :id";
-        $this->db->query($query);
+        $sql = "SELECT `comment`,`reply`,`user_id`,`post_id`,`created_at`,`updated_at` FROM " . $this->db_table . " WHERE `id` = :id";
+        $this->db->query($sql);
         $this->db->bind(':id', $id);
         $data = $this->db->single();
         return $data;
@@ -69,8 +62,8 @@ class Comment {
     
     // Update the specific comment
     public function update($id, $comment, $reply, $user_id, $post_id, $updated_at){
-        $query = "UPDATE " . $this->db_table . " SET `comment` = :comment, `reply` = :reply, `user_id` = :user_id, `post_id` = :post_id WHERE `id` = :id";
-        $this->db->query($query);
+        $sql = "UPDATE " . $this->db_table . " SET `comment` = :comment, `reply` = :reply, `user_id` = :user_id, `post_id` = :post_id, `updated_at` = :updated_at WHERE `id` = :id "; 
+        $this->db->query($sql);
         $this->db->bind(':id',$id);
         $this->db->bind(':user_id',$user_id);
         $this->db->bind(':post_id',$post_id);
@@ -81,21 +74,20 @@ class Comment {
         if($reply != ""){
             $this->db->bind(':reply',$reply);
         }
-        if($updated_at != ""){
-            $this->db->bind(':updated_at',$updated_at);
-        }
+        $this->db->bind(':updated_at',$updated_at);
 
         if($this->db->execute()){
-            return true;
+            $data = $this->get($id);
+            return $data;
         } else {
-            return false;
+            return null;
         } 
     }
 
     // Delete the specific comment
     public function delete($id) {
-        $query = "DELETE FROM " . $this->db_table . " WHERE `id` = :id ";
-        $this->db->query($query);
+        $sql = "DELETE FROM " . $this->db_table . " WHERE `id` = :id ";
+        $this->db->query($sql);
         $this->db->bind(':id',$id);
         $data = $this->db->single();
         return $data;

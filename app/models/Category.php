@@ -1,58 +1,51 @@
 <?php 
+namespace App\Models;
 
-class Category {
+use App\Core\Model as Model;
+
+class Category extends Model{
 
     private $db_table = "categories";
 
     public $id;
     public $name;
     public $slug;
-  
-    public function __construct(){
-        $this->db = new Database;
-    }
-
-    public function findAll($query){
-        $this->db->query($query);
-
-        $set = $this->db->resultSet();
-
-        return $set;
-    }
 
     // Get all posts
     public function index(){
-        $query = "SELECT * FROM " . $this->db_table . "";
-        $data = $this->findAll($query);
+        $sql = "SELECT * FROM " . $this->db_table . "";
+        $data = $this->findAll($sql);
         return $data;
     }
 
     // Find current data by id
     public function find($id) {
-        $query = "SELECT * FROM " . $this->db_table . " WHERE `id` = :id ";
-        $this->db->query($query);
+        $sql = "SELECT * FROM " . $this->db_table . " WHERE `id` = :id ";
+        $this->db->query($sql);
         $this->db->bind(':id',$id);
-        $data = $this->db->single($query); 
+        $data = $this->db->single($sql); 
         return $data;
     }
 
     // Create new category
     public function create($name, $slug){
-        $query = "INSERT INTO " . $this->db_table . " (`name`, `slug`) VALUES (:name, :slug)";
-        $this->db->query($query);               
+        $sql = "INSERT INTO " . $this->db_table . " (`name`, `slug`) VALUES (:name, :slug)";
+        $this->db->query($sql);               
         $this->db->bind(':name', $name);
         $this->db->bind(':slug', $slug);
         if($this->db->execute()){
-            return true;
+            $insert_id = $this->db->lastInsertId();
+            $data = $this->get($insert_id);
+            return $data;
         } else {
-            return false;
+            return null;
         }
     }
     
     // Get specific category
     public function get($id) {
-        $query = "SELECT * FROM " . $this->db_table . " WHERE `id` = :id";
-        $this->db->query($query);
+        $sql = "SELECT * FROM " . $this->db_table . " WHERE `id` = :id";
+        $this->db->query($sql);
         $this->db->bind(':id', $id);
         $data = $this->db->single();
         return $data;
@@ -60,8 +53,8 @@ class Category {
     
     // Update the specific category
     public function update($id, $name, $slug){
-        $query = "UPDATE " . $this->db_table . " SET `name` = :name, `slug` = :slug WHERE `id` = :id";
-        $this->db->query($query);
+        $sql = "UPDATE " . $this->db_table . " SET `name` = :name, `slug` = :slug WHERE `id` = :id";
+        $this->db->query($sql);
         $this->db->bind(':id',$id);
 
         if($name != ""){
@@ -72,7 +65,8 @@ class Category {
         }
 
         if($this->db->execute()){
-            return true;
+            $data = $this->get($id);
+            return $data;
         } else {
             return false;
         } 
@@ -80,8 +74,8 @@ class Category {
 
     // Delete specific post
     public function delete($id) {
-        $query = "DELETE FROM " . $this->db_table . " WHERE `id` = :id ";
-        $this->db->query($query);
+        $sql = "DELETE FROM " . $this->db_table . " WHERE `id` = :id ";
+        $this->db->query($sql);
         $this->db->bind(':id',$id);
         $data = $this->db->single();
         return $data;

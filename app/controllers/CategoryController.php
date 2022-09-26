@@ -1,9 +1,8 @@
 <?php
+namespace App\Controllers;
 
-namespace app\controllers;
-
-use app\core\Controller;
-
+use App\Core\Controller;
+use App\Models\Category as Category;
 class CategoryController extends Controller{
    
     function __construct()
@@ -11,9 +10,11 @@ class CategoryController extends Controller{
         header('Content-type: application/json');
     }
 
-    public function index(){    
-        $category = $this->model("Category");
+    public function index(){ 
+
+        $category = new Category;
         $data = $category->index();
+
         if(count($data) > 0){
             http_response_code(200);
             echo json_encode(
@@ -34,7 +35,9 @@ class CategoryController extends Controller{
     }
 
     public function createCategory(){
-        $post = $this->model("Category");
+
+        $post = new Category;
+
         if(isset($_POST['name']) && $_POST['slug']){
             $name = $_POST['name'];
             $slug = $_POST['slug'];
@@ -62,7 +65,8 @@ class CategoryController extends Controller{
     }
 
     public function getCategory($id){     
-        $category = $this->model("Category");
+
+        $category = new Category;
         $data = $category->get($id);
         
         if(empty($data)){
@@ -85,8 +89,10 @@ class CategoryController extends Controller{
     }
 
     public function updateCategory($id){
-        $category = $this->model("Category");
+
+        $category = new Category;
         $old_data = $category->find($id);
+
         if(empty($old_data)){
             http_response_code(404);
             echo json_encode(
@@ -120,8 +126,10 @@ class CategoryController extends Controller{
     }
 
     public function deleteCategory($id){
-        $category = $this->model("Category");
+
+        $category = new Category;
         $old_data = $category->find($id);
+
         if(empty($old_data)){
             http_response_code(404);
             echo json_encode(

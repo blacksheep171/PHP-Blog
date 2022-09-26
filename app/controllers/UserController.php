@@ -1,8 +1,9 @@
 <?php 
 
-namespace app\controllers;
+namespace App\Controllers;
 
-use app\core\Controller;
+use App\Core\Controller;
+use App\Models\User as User;
 
 class UserController extends Controller
 {
@@ -16,7 +17,8 @@ class UserController extends Controller
     }
 
     public function index(){
-        $users = $this->model("User");
+        
+        $users = new User;
         $data = $users->index();
     
         if(count($data) > 0){
@@ -37,8 +39,10 @@ class UserController extends Controller
             ]);
         }
     }
+   
     public function createUser(){
-        $users = $this->model("User");
+
+        $users =  new User;
         
         $fullname = $_POST['fullname'];
         $email = $_POST['email'];
@@ -70,7 +74,8 @@ class UserController extends Controller
     }
 
     public function getUser($id) {
-        $users = $this->model("User");
+
+        $users =  new User;
         $data = $users->get($id);
         
         if(empty($data)){
@@ -91,9 +96,12 @@ class UserController extends Controller
             ]);
         }
     }
+
     public function updateUser($id){
-        $users = $this->model("User");
+
+        $users =  new User;
         $old_data = $users->find($id);
+
         if(empty($old_data)){
             http_response_code(404);
             echo json_encode(
@@ -110,6 +118,7 @@ class UserController extends Controller
             $updated_at = date('Y-m-d H:i:s');
 
             $data = $users->update($id, $fullname, $email, $gender, $avatar, $updated_at);
+
             if($data){
                 http_response_code(200);
                 echo json_encode(
@@ -132,8 +141,9 @@ class UserController extends Controller
 
     public function deleteUser($id){
 
-        $users = $this->model("User");
+        $users =  new User;
         $old_data = $users->find($id);
+
         if(empty($old_data)){
             http_response_code(404);
             echo json_encode(
@@ -155,9 +165,11 @@ class UserController extends Controller
     }
 
     public function changeUserPassword($id){
-        $users = $this->model("User");
+
+        $users =  new User;
         $password = isset($_POST['password']) ? password_hash(($_POST['password']), PASSWORD_DEFAULT) : null;
         $old_data = $users->find($id);
+        
         if(empty($old_data)){
             http_response_code(404);
             echo json_encode(

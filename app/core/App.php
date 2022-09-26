@@ -2,8 +2,6 @@
 
 require_once (dirname(__FILE__).'/Autoload.php');
 
-// use app\core\Router;
-
 class App {
 
     private $router;
@@ -19,6 +17,7 @@ class App {
     public static function setConfig($config) {
         self::$config = $config;
     }
+    
     public static function getConfig(){
         return self::$config;
     }

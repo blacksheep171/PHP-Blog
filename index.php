@@ -1,9 +1,10 @@
 <?php
 session_start();
-require_once "./app/core/App.php";
-require_once "./app/core/Controller.php";
-require_once "./app/core/Database.php";
-$config = require_once "./config/config.php";
+require_once './vendor/autoload.php';
+require_once "./app/Core/App.php";
+require_once "./app/Core/Controller.php";
+require_once "./app/Core/Database.php";
+$config = require_once "./app/Config/Config.php";
 
 App::setConfig($config);
 // print_r($_REQUEST);

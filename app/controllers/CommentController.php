@@ -1,8 +1,9 @@
 <?php
 
-namespace app\controllers;
+namespace App\Controllers;
 
-use app\core\Controller;
+use App\Core\Controller;
+use App\Models\Comment as Comment;
 
 class CommentController extends Controller{
    
@@ -11,8 +12,10 @@ class CommentController extends Controller{
         header('Content-type: application/json');
     }
     public function index(){
-        $post = $this->model("Comment");
+
+        $post = new Comment;
         $data = $post->index();
+
         if(count($data) > 0){
             http_response_code(200);
             echo json_encode(
@@ -33,7 +36,9 @@ class CommentController extends Controller{
     }
 
     public function createComment(){
-        $comments = $this->model("Comment");
+
+        $comments = new Comment;
+
         if(isset($_POST['comment']) && isset($_POST['reply']) && isset($_POST['user_id']) && isset($_POST['post_id'])){
             $comment = $_POST['comment'];
             $reply = $_POST['reply'];
@@ -64,10 +69,35 @@ class CommentController extends Controller{
         }
     }
 
-    public function updateComment($id){
-       
-        $comments = $this->model("Comment");
+    public function getComment($id) {
+
+        $comment = new Comment;
+        $data = $comment->get($id);
+        
+        if(empty($data)){
+            http_response_code(404);
+            echo json_encode(
+                [   "success" => false,
+                    "message" => "not found",
+                    "code" => 404,
+                    "data" => null
+            ]);
+        } else {
+            http_response_code(200);
+            echo json_encode(
+                [   "success" => true,
+                    "message" => "success",
+                    "code" => 200,
+                    "data" => $data
+            ]);
+        }
+    }
+    
+    public function updateComment($id) {
+
+        $comments = new Comment;
         $old_data = $comments->find($id);
+
         if(empty($old_data)){
             http_response_code(404);
             echo json_encode(
@@ -84,6 +114,7 @@ class CommentController extends Controller{
             $updated_at = date('Y-m-d H:i:s');
 
             $data = $comments->update($id, $comment, $reply, $user_id, $post_id, $updated_at);
+
             if($data){
                 http_response_code(200);
                 echo json_encode(
@@ -101,6 +132,31 @@ class CommentController extends Controller{
                         "data" => null
                 ]);
             }
+        }
+    }
+
+    public function deleteComment($id){
+
+        $post = new Comment;
+        $old_data = $post->find($id);
+
+        if(empty($old_data)){
+            http_response_code(404);
+            echo json_encode(
+                [   "success" => false,
+                    "message" => "not found",
+                    "code" => 404,
+                    "data" => null
+            ]);
+        } else {
+            $post->delete($id);
+            http_response_code(200);
+            echo json_encode(
+                [   "success" => true,
+                    "message" => "success",
+                    "code" => 200,
+                    "data" => null
+            ]);
         }
     }
 }

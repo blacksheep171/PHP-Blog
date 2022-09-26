@@ -4,6 +4,8 @@ class Router {
 
     private static $routers = [];
 
+    protected $params = [];
+
     function __construct(){
 
     }
@@ -83,7 +85,7 @@ class Router {
                     continue;
                 }
                 //compare controllers
-                if(($routeParams[1] !== $requestParams[1])) {
+                if($routeParams[1] !== $requestParams[1]) {
                     continue;
                 }
                 if($routeParams[2] !== $requestParams[2]) {
@@ -119,7 +121,8 @@ class Router {
         }
         $className = explode('@', $action)[0];
         $methodName = explode('@', $action)[1];
-        $classNameSpace = 'App\\controllers\\'.$className;
+        // $classNameSpace = 'App\\controllers\\'.$className;
+        $classNameSpace = $this->getNamespace().$className;
         if(class_exists($classNameSpace)) {
             $object = new $classNameSpace;
             if(method_exists($classNameSpace, $methodName)){
@@ -131,8 +134,18 @@ class Router {
             die('Class "'.$className.'" not found');
         }
     }
+
     function run() {
         $this->map();
     }
     
+    protected function getNamespace()
+    {
+        $namespace = 'App\controllers\\';
+
+        if (array_key_exists('namespace', $this->params)) {
+            $namespace .= $this->params['namespace'] . '\\';
+        }
+        return $namespace;
+    }
 }
