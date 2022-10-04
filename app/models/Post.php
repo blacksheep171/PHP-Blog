@@ -4,7 +4,7 @@ namespace App\Models;
 use App\Core\Model as Model;
 class Post extends Model{
 
-    private $db_table = "posts";
+    private $table = "posts";
 
     public $id;
     public $title;
@@ -17,14 +17,14 @@ class Post extends Model{
     
     // Get all posts
     public function index(){
-        $sql = "SELECT `id`, `title`,`summary`, `content`, `created_at`, `updated_at` FROM " . $this->db_table . "";
+        $sql = "SELECT `id`, `title`,`slug`,`summary`, `content`, `created_at`, `updated_at` FROM " . $this->table . "";
         $data = $this->findAll($sql);
         return $data;
     }
 
     // Find current data by id
     public function find($id) {
-        $sql = "SELECT * FROM " . $this->db_table . " WHERE `id` = :id ";
+        $sql = "SELECT * FROM " . $this->table . " WHERE `id` = :id ";
         $this->db->query($sql);
         $this->db->bind(':id',$id);
         $data = $this->db->single($sql); 
@@ -33,7 +33,7 @@ class Post extends Model{
 
     // Create specific post
     public function create($title,$slug, $summary,$content,$user_id,$created_at,$updated_at){
-        $sql = "INSERT INTO " . $this->db_table . " (`title`, `slug`, `summary`, `content`, `user_id`, `created_at`, `updated_at`) VALUES (:title, :slug, :summary, :content, :user_id, :created_at, :updated_at)";
+        $sql = "INSERT INTO " . $this->table . " (`title`, `slug`, `summary`, `content`, `user_id`, `created_at`, `updated_at`) VALUES (:title, :slug, :summary, :content, :user_id, :created_at, :updated_at)";
         $this->db->query($sql);
         $this->db->bind(':title', $title);
         $this->db->bind(':slug', $slug);
@@ -54,7 +54,7 @@ class Post extends Model{
 
     // Get specific post
      public function get($id) {
-        $sql = "SELECT `id`, `title`, `summary`, `content`, `user_id`, `created_at`, `updated_at` FROM " . $this->db_table . " WHERE `id` = :id ";
+        $sql = "SELECT `id`, `title`, `summary`, `content`, `user_id`, `created_at`, `updated_at` FROM " . $this->table . " WHERE `id` = :id ";
         $this->db->query($sql);
         $this->db->bind(':id',$id);
         $data = $this->db->single();
@@ -63,7 +63,7 @@ class Post extends Model{
 
     // Update the specific post
     public function update($id,$title, $slug,$summary,$content, $user_id, $updated_at){
-        $sql = "UPDATE " . $this->db_table . " SET `title` = :title, `slug` = :slug, `summary` = :summary, `content` = :content, `user_id` = :user_id, `updated_at` = :updated_at WHERE `id` = :id "; 
+        $sql = "UPDATE " . $this->table . " SET `title` = :title, `slug` = :slug, `summary` = :summary, `content` = :content, `user_id` = :user_id, `updated_at` = :updated_at WHERE `id` = :id "; 
         $this->db->query($sql);
         $this->db->bind(':id',$id);
         $this->db->bind(':user_id',$user_id);
@@ -92,7 +92,7 @@ class Post extends Model{
     
     // Delete specific post
     public function delete($id) {
-        $sql = "DELETE FROM " . $this->db_table . " WHERE `id` = :id ";
+        $sql = "DELETE FROM " . $this->table . " WHERE `id` = :id ";
         $this->db->query($sql);
         $this->db->bind(':id',$id);
         $data = $this->db->single();

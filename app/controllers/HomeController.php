@@ -11,7 +11,7 @@ class HomeController extends Controller{
         // echo "home page";
     }
     function index(){
-        echo "welcome to home page";
+        return $this->view('Home/homepage');
     }
 
 }

@@ -5,7 +5,7 @@ use App\Core\Model as Model;
 
 class Comment extends Model{
 
-    private $db_table = "comments";
+    private $table = "comments";
 
     public $id;
     public $comment;
@@ -17,14 +17,14 @@ class Comment extends Model{
 
     // Get all comments
     public function index(){
-        $sql = "SELECT * FROM " . $this->db_table . "";
+        $sql = "SELECT * FROM " . $this->table . "";
         $data = $this->findAll($sql);
         return $data;
     }
 
     // Find current data by id
     public function find($id) {
-        $sql = "SELECT * FROM " . $this->db_table . " WHERE `id` = :id ";
+        $sql = "SELECT * FROM " . $this->table . " WHERE `id` = :id ";
         $this->db->query($sql);
         $this->db->bind(':id',$id);
         $data = $this->db->single($sql); 
@@ -33,7 +33,7 @@ class Comment extends Model{
 
     // Create new comment
     public function create($comment, $reply, $user_id, $post_id, $created_at, $updated_at){
-        $sql = "INSERT INTO " . $this->db_table . " (`comment`, `reply`,`user_id`,`post_id`,`created_at`,`updated_at`  ) VALUES (:comment, :reply,:user_id,:post_id,:created_at,:updated_at)";
+        $sql = "INSERT INTO " . $this->table . " (`comment`, `reply`,`user_id`,`post_id`,`created_at`,`updated_at`  ) VALUES (:comment, :reply,:user_id,:post_id,:created_at,:updated_at)";
         $this->db->query($sql);               
         $this->db->bind(':comment', $comment);
         $this->db->bind(':reply', $reply);
@@ -53,7 +53,7 @@ class Comment extends Model{
     
     // Get the specific comment
     public function get($id) {
-        $sql = "SELECT `comment`,`reply`,`user_id`,`post_id`,`created_at`,`updated_at` FROM " . $this->db_table . " WHERE `id` = :id";
+        $sql = "SELECT `comment`,`reply`,`user_id`,`post_id`,`created_at`,`updated_at` FROM " . $this->table . " WHERE `id` = :id";
         $this->db->query($sql);
         $this->db->bind(':id', $id);
         $data = $this->db->single();
@@ -62,7 +62,7 @@ class Comment extends Model{
     
     // Update the specific comment
     public function update($id, $comment, $reply, $user_id, $post_id, $updated_at){
-        $sql = "UPDATE " . $this->db_table . " SET `comment` = :comment, `reply` = :reply, `user_id` = :user_id, `post_id` = :post_id, `updated_at` = :updated_at WHERE `id` = :id "; 
+        $sql = "UPDATE " . $this->table . " SET `comment` = :comment, `reply` = :reply, `user_id` = :user_id, `post_id` = :post_id, `updated_at` = :updated_at WHERE `id` = :id "; 
         $this->db->query($sql);
         $this->db->bind(':id',$id);
         $this->db->bind(':user_id',$user_id);
@@ -86,7 +86,7 @@ class Comment extends Model{
 
     // Delete the specific comment
     public function delete($id) {
-        $sql = "DELETE FROM " . $this->db_table . " WHERE `id` = :id ";
+        $sql = "DELETE FROM " . $this->table . " WHERE `id` = :id ";
         $this->db->query($sql);
         $this->db->bind(':id',$id);
         $data = $this->db->single();

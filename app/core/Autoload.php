@@ -11,8 +11,7 @@ class Autoload {
 
     private function autoload($class){
         $rootPath = App::getConfig()['rootDir'];
-        // print_r($rootPath);die();
-        // $className = end(explode('\\',$class));
+    
         $tmp = explode('\\', $class);
         $className = end($tmp);
         $pathName = str_replace($className,'',$class);

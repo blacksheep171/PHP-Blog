@@ -34,6 +34,7 @@ class PostController extends Controller{
                     "data" => null
             ]);
         }
+
     }
 
     public function createPost(){

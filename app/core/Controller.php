@@ -6,7 +6,7 @@ require_once "./vendor/autoload.php";
 class Controller {
 
     public function view($view, $data=[]){
-            require_once "./App/views/".$view.".php";
+            require_once "./App/Views/".$view.".php";
     }
     
 }

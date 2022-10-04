@@ -5,7 +5,7 @@ use App\Core\Model as Model;
 
 class Category extends Model{
 
-    private $db_table = "categories";
+    private $table = "categories";
 
     public $id;
     public $name;
@@ -13,14 +13,14 @@ class Category extends Model{
 
     // Get all posts
     public function index(){
-        $sql = "SELECT * FROM " . $this->db_table . "";
+        $sql = "SELECT * FROM " . $this->table . "";
         $data = $this->findAll($sql);
         return $data;
     }
 
     // Find current data by id
     public function find($id) {
-        $sql = "SELECT * FROM " . $this->db_table . " WHERE `id` = :id ";
+        $sql = "SELECT * FROM " . $this->table . " WHERE `id` = :id ";
         $this->db->query($sql);
         $this->db->bind(':id',$id);
         $data = $this->db->single($sql); 
@@ -29,7 +29,7 @@ class Category extends Model{
 
     // Create new category
     public function create($name, $slug){
-        $sql = "INSERT INTO " . $this->db_table . " (`name`, `slug`) VALUES (:name, :slug)";
+        $sql = "INSERT INTO " . $this->table . " (`name`, `slug`) VALUES (:name, :slug)";
         $this->db->query($sql);               
         $this->db->bind(':name', $name);
         $this->db->bind(':slug', $slug);
@@ -44,7 +44,7 @@ class Category extends Model{
     
     // Get specific category
     public function get($id) {
-        $sql = "SELECT * FROM " . $this->db_table . " WHERE `id` = :id";
+        $sql = "SELECT * FROM " . $this->table . " WHERE `id` = :id";
         $this->db->query($sql);
         $this->db->bind(':id', $id);
         $data = $this->db->single();
@@ -53,7 +53,7 @@ class Category extends Model{
     
     // Update the specific category
     public function update($id, $name, $slug){
-        $sql = "UPDATE " . $this->db_table . " SET `name` = :name, `slug` = :slug WHERE `id` = :id";
+        $sql = "UPDATE " . $this->table . " SET `name` = :name, `slug` = :slug WHERE `id` = :id";
         $this->db->query($sql);
         $this->db->bind(':id',$id);
 
@@ -74,7 +74,7 @@ class Category extends Model{
 
     // Delete specific post
     public function delete($id) {
-        $sql = "DELETE FROM " . $this->db_table . " WHERE `id` = :id ";
+        $sql = "DELETE FROM " . $this->table . " WHERE `id` = :id ";
         $this->db->query($sql);
         $this->db->bind(':id',$id);
         $data = $this->db->single();

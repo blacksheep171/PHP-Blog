@@ -12,6 +12,7 @@ Router::get('/users/get_user/{id}', "UserController@getUser");
 Router::post('/users/update/{id}', "UserController@updateUser");
 Router::delete('/users/delete/{id}', "UserController@deleteUser");
 Router::post('/users/change_password/{id}', "UserController@changeUserPassword");
+Router::post('/users/upload', "UserController@upload");
 
 // Posts
 Router::post('/posts', "PostController@createPost");

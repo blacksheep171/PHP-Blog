@@ -4,12 +4,13 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Models\User as User;
+use App\Models\Gallery as Gallery;
 
 class UserController extends Controller
 {
 
     function __construct(){
-        header('Content-type: application/json');
+        // header('Content-type: application/json');
     }
 
     function handlePage($page){
@@ -21,10 +22,12 @@ class UserController extends Controller
         $users = new User;
         $data = $users->index();
     
-        if(count($data) > 0){
+        if(!empty($data)){
             http_response_code(200);
+            header('Content-type: application/json');
             echo json_encode(
-                [   "success" => true,
+                [
+                    "success" => true,
                     "message" => "success",
                     "code" => 200,
                     "data" => $data
@@ -32,19 +35,20 @@ class UserController extends Controller
         } else {
             http_response_code(404);
             echo json_encode(
-                [   "success" => true,
+                [   "success" => false,
                     "message" => "not found",
                     "code" => 404,
                     "data" => null
             ]);
         }
+
     }
    
     public function createUser(){
 
         $users =  new User;
         
-        $fullname = $_POST['fullname'];
+        $fullname = $_POST['full_name'];
         $email = $_POST['email'];
         $password = password_hash(($_POST['password']), PASSWORD_DEFAULT);
         $gender = $_POST['gender'];
@@ -111,7 +115,7 @@ class UserController extends Controller
                     "data" => null
             ]);
         } else {
-            $fullname = $_POST['fullname'];
+            $fullname = $_POST['full_name'];
             $email = $_POST['email'];
             $gender = $_POST['gender'];
             $avatar = $_POST['avatar'];
@@ -197,6 +201,64 @@ class UserController extends Controller
                         "data" => null
                 ]);
             }
+        }
+    }
+
+
+    public function upload() {
+        header('Content-type: application/json');
+        $image = new Gallery;
+        $targetDir = 'public/uploads';
+        $targetFile = $targetDir.basename($_FILES["fileToUpload"]["name"]);
+        // declare
+        $fileName = $_FILES['fileToUpload']['name'];
+        $filePath = $_FILES['fileToUpload']['tmp_name'];
+        $fileSize = $_FILES['fileToUpload']['size'];
+        $error = [];    
+
+        if(empty($fileName)){
+             $error[] = 'please select an images';
+        } else {
+            $fileExt = strtolower(pathinfo($fileName,PATHINFO_EXTENSION));
+            //extension
+            $extension = ['jpg', 'png', 'gif', 'jpeg','gif'];
+
+            if(in_array($fileExt, $extension)) {
+                if(!file_exists($targetDir.$fileName)){
+                    if($fileSize < 5000000) {
+                        move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $targetFile);
+                    } else {
+                        $error[] = 'Sorry your file is too large';
+                    }
+                } else {
+                    $error[] = 'Sorry, file already exists check upload folder';
+                }
+            } else {
+                $error[] = 'Sorry, only JPG, JPEG, PNG & GIF files are allowed';
+            }
+        }
+        
+        if(empty($error)) {
+            $image->upload($fileName,$filePath);
+            $data = [
+                'name' => $fileName,
+                'path' => $filePath
+            ];
+             http_response_code(200);
+            echo json_encode(
+                [   "success" => true,
+                    "message" => 'success',
+                    "code" => 200,
+                    "data" => $data
+            ]);
+        } else {
+             http_response_code(404);
+            echo json_encode(
+                [   "success" => false,
+                    "message" => $error[0],
+                    "code" => 404,
+                    "data" => null
+            ]);
         }
     }
 }

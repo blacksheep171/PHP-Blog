@@ -5,8 +5,8 @@ use App\Core\Model as Model;
 
 class User extends Model
 {   
-    // Declare db_table
-    private $db_table = "users";
+    // Declare table
+    private $table = "users";
     // Columns
     public $id;
     public $full_name;
@@ -19,7 +19,7 @@ class User extends Model
 
     // Find current data by id
     public function find($id) {
-        $sql = "SELECT * FROM " . $this->db_table . " WHERE `id` = :id ";
+        $sql = "SELECT * FROM " . $this->table . " WHERE `id` = :id ";
         $this->db->query($sql);
         $this->db->bind(':id',$id);
         $data = $this->db->single($sql); 
@@ -28,14 +28,14 @@ class User extends Model
 
     // Get all users
     public function index(){
-        $sql = "SELECT `id`, `full_name`, `email`, `gender`, `avatar`, `created_at`, `updated_at` FROM " . $this->db_table . "";
+        $sql = "SELECT `id`, `full_name`, `email`, `gender`, `avatar`, `created_at`, `updated_at` FROM " . $this->table . "";
         $data = $this->findAll($sql);
         return $data;
     }
 
     // Create new specific users
     public function create($full_name, $email,$password,$gender, $avatar, $created_at, $updated_at){
-        $sql = "INSERT INTO " . $this->db_table . " (`full_name`, `email`,`password`, `gender`, `avatar`, `created_at`, `updated_at`) VALUES (:full_name, :email, :password, :gender, :avatar , :created_at, :updated_at)";
+        $sql = "INSERT INTO " . $this->table . " (`full_name`, `email`,`password`, `gender`, `avatar`, `created_at`, `updated_at`) VALUES (:full_name, :email, :password, :gender, :avatar , :created_at, :updated_at)";
         $this->db->query($sql);
         $this->db->bind(':full_name', $full_name);
         $this->db->bind(':email',$email);
@@ -56,7 +56,7 @@ class User extends Model
 
     // Get specific user
     public function get($id) {
-        $sql = "SELECT `id`, `full_name`, `email`, `gender`, `avatar`, `created_at`, `updated_at` FROM " . $this->db_table . " WHERE `id` = :id ";
+        $sql = "SELECT `id`, `full_name`, `email`, `gender`, `avatar`, `created_at`, `updated_at` FROM " . $this->table . " WHERE `id` = :id ";
         $this->db->query($sql);
         $this->db->bind(':id',$id);
         $data = $this->db->single();
@@ -65,7 +65,7 @@ class User extends Model
 
     // Update the specific user
     public function update($id, $full_name, $email, $gender, $avatar, $updated_at){
-        $sql = "UPDATE " . $this->db_table . " SET `full_name` = :full_name, `email` = :email, `gender` = :gender, `avatar` = :avatar, `updated_at` = :updated_at WHERE `id` = :id "; 
+        $sql = "UPDATE " . $this->table . " SET `full_name` = :full_name, `email` = :email, `gender` = :gender, `avatar` = :avatar, `updated_at` = :updated_at WHERE `id` = :id "; 
         $this->db->query($sql);
         $this->db->bind(':id',$id);
 
@@ -93,7 +93,7 @@ class User extends Model
 
     // Delete the specific user
     public function delete($id) {    
-        $sql = "DELETE FROM " . $this->db_table . " WHERE `id` = :id ";
+        $sql = "DELETE FROM " . $this->table . " WHERE `id` = :id ";
         $this->db->query($sql);
         $this->db->bind(':id',$id);
         $data = $this->db->single();
@@ -103,7 +103,7 @@ class User extends Model
 
     // Change user password
     public function changePassword($id, $password){
-        $sql = "UPDATE ". $this->db_table ." SET `password` = :password WHERE `id` = :id";
+        $sql = "UPDATE ". $this->table ." SET `password` = :password WHERE `id` = :id";
         $this->db->query($sql);
         $this->db->bind(':id',$id);
         if($password !== ''){
