@@ -12,5 +12,10 @@
             "email": "ngxuanhieu97@gmail.com"
         }
     ],
-    "require": {}
+    "require-dev": {
+        "squizlabs/php_codesniffer": "*"
+    },
+    "require": {
+        "friendsofphp/php-cs-fixer": "^3.11"
+    }
 }

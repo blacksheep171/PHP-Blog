@@ -121,7 +121,6 @@ class Router {
         }
         $className = explode('@', $action)[0];
         $methodName = explode('@', $action)[1];
-        // $classNameSpace = 'App\\controllers\\'.$className;
         $classNameSpace = $this->getNamespace().$className;
         if(class_exists($classNameSpace)) {
             $object = new $classNameSpace;

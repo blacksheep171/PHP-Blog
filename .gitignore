@@ -1,1 +1,6 @@
 /vendor/
+app/Config/Config.php
+public/uploads/
+.gitignore
+bug.txt
+.php-cs-fixer.cache

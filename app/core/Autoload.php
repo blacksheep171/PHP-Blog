@@ -11,13 +11,10 @@ class Autoload {
 
     private function autoload($class){
         $rootPath = App::getConfig()['rootDir'];
-    
         $tmp = explode('\\', $class);
         $className = end($tmp);
         $pathName = str_replace($className,'',$class);
-        // print_r($pathName);die();
         $filePath = $this->rootDir.'\\'.$pathName.$className.'.php';
-        // print_r($filePath);die();
 
         if(file_exists($filePath)){
             require_once $filePath;

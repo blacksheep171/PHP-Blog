@@ -40,10 +40,10 @@ class CommentController extends Controller{
         $comments = new Comment;
 
         if(isset($_POST['comment']) && isset($_POST['reply']) && isset($_POST['user_id']) && isset($_POST['post_id'])){
-            $comment = $_POST['comment'];
-            $reply = $_POST['reply'];
-            $user_id = $_POST['user_id'];
-            $post_id = $_POST['post_id'];
+            $comment = htmlentities($_POST['comment']);
+            $reply = htmlentities($_POST['reply']);
+            $user_id = htmlentities($_POST['user_id']);
+            $post_id = htmlentities($_POST['post_id']);
             $created_at = date('Y-m-d H:i:s');
             $updated_at = date('Y-m-d H:i:s');
 
@@ -107,10 +107,10 @@ class CommentController extends Controller{
                     "data" => null
             ]);
         } else {
-            $comment = $_POST['comment'];
-            $reply = $_POST['reply'];
-            $user_id = $_POST['user_id'];
-            $post_id = $_POST['post_id'];
+            $comment = htmlentities($_POST['comment']);
+            $reply =htmlentities($_POST['reply']);
+            $user_id = htmlentities($_POST['user_id']);
+            $post_id = htmlentities($_POST['post_id']);
             $updated_at = date('Y-m-d H:i:s');
 
             $data = $comments->update($id, $comment, $reply, $user_id, $post_id, $updated_at);

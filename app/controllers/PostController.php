@@ -42,11 +42,11 @@ class PostController extends Controller{
         $post = new Post;
         
         if(isset($_POST['title']) && isset($_POST['slug']) && isset($_POST['summary']) && isset($_POST['content']) && isset($_POST['user_id']) && isset($_POST['user_id'])){
-            $title = $_POST['title'];
-            $slug = $_POST['slug'];
-            $summary = $_POST['summary'];
-            $content = $_POST['content'];
-            $user_id = $_POST['user_id'];
+            $title = htmlentities($_POST['title']);
+            $slug = htmlentities($_POST['slug']);
+            $summary = htmlentities($_POST['summary']);
+            $content = htmlentities($_POST['content']);
+            $user_id = htmlentities($_POST['user_id']);
             $created_at = date('Y-m-d H:i:s');
             $updated_at = date('Y-m-d H:i:s');
 
@@ -109,11 +109,11 @@ class PostController extends Controller{
                     "data" => null
             ]);
         } else {
-            $title = $_POST['title'];
-            $slug = $_POST['slug'];
-            $summary = $_POST['summary'];
-            $content = $_POST['content'];
-            $user_id = $_POST['user_id'];
+            $title = htmlentities($_POST['title']);
+            $slug = htmlentities($_POST['slug']);
+            $summary = htmlentities($_POST['summary']);
+            $content = htmlentities($_POST['content']);
+            $user_id = htmlentities($_POST['user_id']);
             $updated_at = date('Y-m-d H:i:s');
 
             $data = $post->update($id, $title, $slug, $summary, $content, $user_id, $updated_at);

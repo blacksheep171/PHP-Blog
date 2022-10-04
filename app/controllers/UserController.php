@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App;
 use App\Core\Controller;
 use App\Models\User as User;
 use App\Models\Gallery as Gallery;
@@ -10,7 +11,7 @@ class UserController extends Controller
 {
 
     function __construct(){
-        // header('Content-type: application/json');
+        header('Content-type: application/json');
     }
 
     function handlePage($page){
@@ -49,10 +50,10 @@ class UserController extends Controller
         $users =  new User;
         
         $fullname = $_POST['full_name'];
-        $email = $_POST['email'];
-        $password = password_hash(($_POST['password']), PASSWORD_DEFAULT);
-        $gender = $_POST['gender'];
-        $avatar = $_POST['avatar'];
+        $email = htmlentities($_POST['email']);
+        $password = htmlentities(password_hash(($_POST['password']), PASSWORD_DEFAULT));
+        $gender = htmlentities($_POST['gender']);
+        $avatar = htmlentities($_POST['avatar']);
         $created_at = date('Y-m-d H:i:s');
         $updated_at = date('Y-m-d H:i:s');
 
@@ -206,7 +207,6 @@ class UserController extends Controller
 
 
     public function upload() {
-        header('Content-type: application/json');
         $image = new Gallery;
         $targetDir = 'public/uploads';
         $targetFile = $targetDir.basename($_FILES["fileToUpload"]["name"]);
@@ -215,7 +215,7 @@ class UserController extends Controller
         $filePath = $_FILES['fileToUpload']['tmp_name'];
         $fileSize = $_FILES['fileToUpload']['size'];
         $error = [];    
-
+        $imageUrl = App::getConfig()['basePath'].$targetFile;
         if(empty($fileName)){
              $error[] = 'please select an images';
         } else {
@@ -239,10 +239,10 @@ class UserController extends Controller
         }
         
         if(empty($error)) {
-            $image->upload($fileName,$filePath);
+            $image->upload($fileName,$imageUrl);
             $data = [
                 'name' => $fileName,
-                'path' => $filePath
+                'path' => $imageUrl
             ];
              http_response_code(200);
             echo json_encode(
