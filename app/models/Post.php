@@ -1,101 +1,78 @@
 <?php 
 namespace App\Models;
 
-use App\Core\Model as Model;
-class Post extends Model{
+class Post {
 
-    private $table = "posts";
+    protected $table = "posts";
 
     public $id;
     public $title;
+    public $slug;
     public $summary;
     public $content;
-    public $user_id;
-    public $created_at;
-    public $updated_at;
+    public $userId;
+    public $createdAt;
+    public $updatedAt;
 
-    
-    // Get all posts
-    public function index(){
-        $sql = "SELECT `id`, `title`,`slug`,`summary`, `content`, `created_at`, `updated_at` FROM " . $this->table . "";
-        $data = $this->findAll($sql);
-        return $data;
+    public function setId($id){
+        $this->id = $id;
     }
 
-    // Find current data by id
-    public function find($id) {
-        $sql = "SELECT * FROM " . $this->table . " WHERE `id` = :id ";
-        $this->db->query($sql);
-        $this->db->bind(':id',$id);
-        $data = $this->db->single($sql); 
-        return $data;
+    public function getId(){
+        return $this->id;
     }
 
-    // Create specific post
-    public function create($title,$slug, $summary,$content,$user_id,$created_at,$updated_at){
-        $sql = "INSERT INTO " . $this->table . " (`title`, `slug`, `summary`, `content`, `user_id`, `created_at`, `updated_at`) VALUES (:title, :slug, :summary, :content, :user_id, :created_at, :updated_at)";
-        $this->db->query($sql);
-        $this->db->bind(':title', $title);
-        $this->db->bind(':slug', $slug);
-        $this->db->bind(':summary', $summary);
-        $this->db->bind(':content', $content);
-        $this->db->bind(':user_id',$user_id);
-        $this->db->bind(':created_at',$created_at);
-        $this->db->bind(':updated_at',$updated_at);
-
-        if($this->db->execute()){
-            $insert_id = $this->db->lastInsertId();
-            $data = $this->get($insert_id);
-            return $data;
-        } else {
-            return false;
-        }
+    public function setTitle($title){
+        $this->title = $title;
     }
 
-    // Get specific post
-     public function get($id) {
-        $sql = "SELECT `id`, `title`, `summary`, `content`, `user_id`, `created_at`, `updated_at` FROM " . $this->table . " WHERE `id` = :id ";
-        $this->db->query($sql);
-        $this->db->bind(':id',$id);
-        $data = $this->db->single();
-        return $data;
+    public function getTitle(){
+        return $this->title;
+    }
+    public function setSlug($slug){
+        $this->slug = $slug;
     }
 
-    // Update the specific post
-    public function update($id,$title, $slug,$summary,$content, $user_id, $updated_at){
-        $sql = "UPDATE " . $this->table . " SET `title` = :title, `slug` = :slug, `summary` = :summary, `content` = :content, `user_id` = :user_id, `updated_at` = :updated_at WHERE `id` = :id "; 
-        $this->db->query($sql);
-        $this->db->bind(':id',$id);
-        $this->db->bind(':user_id',$user_id);
-
-        if($title != ""){
-            $this->db->bind(':title', $title);
-        }
-        if($slug != ""){
-            $this->db->bind(':slug',$slug);
-        }
-        if($summary != ""){
-            $this->db->bind(':summary',$summary);
-        }
-        if($content != ""){
-            $this->db->bind(':content',$content);
-        }
-        $this->db->bind(':updated_at',$updated_at);
-
-        if($this->db->execute()){
-            $data = $this->get($id);
-            return $data;
-        } else {
-            return null;
-        } 
+    public function getSlug(){
+        return $this->slug;
     }
-    
-    // Delete specific post
-    public function delete($id) {
-        $sql = "DELETE FROM " . $this->table . " WHERE `id` = :id ";
-        $this->db->query($sql);
-        $this->db->bind(':id',$id);
-        $data = $this->db->single();
-        return $data;
+    public function setSummary($summary){
+        $this->summary = $summary;
+    }
+
+    public function getSummary(){
+        return $this->summary;
+    }
+
+    public function setContent($content){
+        $this->content = $content;
+    }
+
+    public function getContent(){
+        return $this->content;
+    }
+
+    public function setUserId($userId){
+        $this->userId = $userId;
+    }
+
+    public function getUserId(){
+        return $this->userId;
+    }
+
+    public function setCreatedAt($createdAt){
+        $this->createdAt = $createdAt;
+    }
+
+    public function getCreatedAt(){
+        return $this->createdAt;
+    }
+
+    public function setUpdatedAt($updatedAt){
+        $this->updatedAt = $updatedAt;
+    }
+
+    public function getUpdatedAt(){
+        return $this->updatedAt;
     }
 }

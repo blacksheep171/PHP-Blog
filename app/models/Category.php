@@ -1,83 +1,37 @@
 <?php 
 namespace App\Models;
 
-use App\Core\Model as Model;
+class Category {
 
-class Category extends Model{
-
-    private $table = "categories";
+    protected $table = "categories";
 
     public $id;
     public $name;
     public $slug;
+    public function __construct(){
 
-    // Get all posts
-    public function index(){
-        $sql = "SELECT * FROM " . $this->table . "";
-        $data = $this->findAll($sql);
-        return $data;
+    }
+    public function setId($id){
+        $this->id = $id;
     }
 
-    // Find current data by id
-    public function find($id) {
-        $sql = "SELECT * FROM " . $this->table . " WHERE `id` = :id ";
-        $this->db->query($sql);
-        $this->db->bind(':id',$id);
-        $data = $this->db->single($sql); 
-        return $data;
+    public function getId(){
+        return $this->id;
     }
 
-    // Create new category
-    public function create($name, $slug){
-        $sql = "INSERT INTO " . $this->table . " (`name`, `slug`) VALUES (:name, :slug)";
-        $this->db->query($sql);               
-        $this->db->bind(':name', $name);
-        $this->db->bind(':slug', $slug);
-        if($this->db->execute()){
-            $insert_id = $this->db->lastInsertId();
-            $data = $this->get($insert_id);
-            return $data;
-        } else {
-            return null;
-        }
+    public function setName($name){
+        $this->name = $name;
+    }
+
+    public function getName(){
+        return $this->name;
+    }
+    public function setSlug($slug){
+        $this->slug = $slug;
+    }
+
+    public function getSlug(){
+        return $this->slug;
     }
     
-    // Get specific category
-    public function get($id) {
-        $sql = "SELECT * FROM " . $this->table . " WHERE `id` = :id";
-        $this->db->query($sql);
-        $this->db->bind(':id', $id);
-        $data = $this->db->single();
-        return $data;
-    }
-    
-    // Update the specific category
-    public function update($id, $name, $slug){
-        $sql = "UPDATE " . $this->table . " SET `name` = :name, `slug` = :slug WHERE `id` = :id";
-        $this->db->query($sql);
-        $this->db->bind(':id',$id);
-
-        if($name != ""){
-            $this->db->bind(':name', $name);
-        }
-        if($slug != ""){
-            $this->db->bind(':slug',$slug);
-        }
-
-        if($this->db->execute()){
-            $data = $this->get($id);
-            return $data;
-        } else {
-            return false;
-        } 
-    }
-
-    // Delete specific post
-    public function delete($id) {
-        $sql = "DELETE FROM " . $this->table . " WHERE `id` = :id ";
-        $this->db->query($sql);
-        $this->db->bind(':id',$id);
-        $data = $this->db->single();
-        return $data;
-    }
 }

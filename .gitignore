@@ -4,3 +4,6 @@ public/uploads/
 .gitignore
 bug.txt
 .php-cs-fixer.cache
+debug.log
+public/uploads0000000932-dong-vat-de-thuong-con-gau-tai-hinh-png-414.png
+.vscode/launch.json

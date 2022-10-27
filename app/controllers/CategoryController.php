@@ -4,23 +4,31 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Models\Category as Category;
+use App\Models\Repository\CategoryRepository as CategoryRepository;
 
 class CategoryController extends Controller
-{
+{   
+     /**
+     * declare category variables
+     * @param string
+     * @return CategoryRepository
+     */
+    protected $category;
+
     public function __construct()
-    {
+    {   
+        $this->category = new CategoryRepository();
         header('Content-type: application/json');
     }
 
     public function index()
-    {
-        $category = new Category();
-        $data = $category->index();
-
-        if (count($data) > 0) {
+    {   
+        $data = $this->category->index();
+        if (!empty($data)) {
             http_response_code(200);
             echo json_encode(
-                [   "success" => true,
+                [   
+                    "success" => true,
                     "message" => "success",
                     "code" => 200,
                     "data" => $data
@@ -40,19 +48,19 @@ class CategoryController extends Controller
 
     public function createCategory()
     {
-        $post = new Category();
+        $input = new Category();
 
         if (isset($_POST['name']) && $_POST['slug']) {
-            $name = htmlentities($_POST['name']);
-            $slug = htmlentities($_POST['slug']);
+            $input->setName(htmlentities($_POST['name']));
+            $input->setSlug(htmlentities($_POST['slug']));
 
-            $data = $post->create($name, $slug);
+            $data = $this->category->create($input);
 
-            if ($data) {
+            if (!empty($data)) {
                 http_response_code(201);
                 echo json_encode(
                     [   "success" => true,
-                        "message" => "Created successfully.",
+                        "message" => "created successfully.",
                         "code" => 201,
                         "data" => $data
                 ]
@@ -62,7 +70,7 @@ class CategoryController extends Controller
             http_response_code(500);
             return json_encode(
                 [   "success" => false,
-                    "message" => "category could not be created.",
+                    "message" => "created failed.",
                     "code" => 500,
                     "data" => null
             ]
@@ -72,8 +80,7 @@ class CategoryController extends Controller
 
     public function getCategory($id)
     {
-        $category = new Category();
-        $data = $category->get($id);
+        $data = $this->category->get($id);
 
         if (empty($data)) {
             http_response_code(404);
@@ -98,22 +105,22 @@ class CategoryController extends Controller
 
     public function updateCategory($id)
     {
-        $category = new Category();
-        $old_data = $category->find($id);
+        $input = new Category();
+        $oldData = $this->category->get($id);
 
-        if (empty($old_data)) {
+        if (empty($oldData)) {
             http_response_code(404);
             echo json_encode(
                 [   "success" => false,
                     "message" => "not found",
                     "code" => 404,
                     "data" => null
-            ]
-            );
+            ]);
         } else {
-            $name = htmlentities($_POST['name']);
-            $slug = htmlentities($_POST['slug']);
-            $data = $category->update($id, $name, $slug);
+            $input->setName(htmlentities($_POST['name']));
+            $input->setSlug(htmlentities($_POST['slug']));
+            $input->setId(htmlentities($id));
+            $data = $this->category->update($input);
             if ($data) {
                 http_response_code(200);
                 echo json_encode(
@@ -138,20 +145,19 @@ class CategoryController extends Controller
 
     public function deleteCategory($id)
     {
-        $category = new Category();
-        $old_data = $category->find($id);
+        
+        $oldData = $this->category->get($id);
 
-        if (empty($old_data)) {
+        if (empty($oldData)) {
             http_response_code(404);
             echo json_encode(
                 [   "success" => false,
                     "message" => "not found",
                     "code" => 404,
                     "data" => null
-            ]
-            );
+            ]);
         } else {
-            $category->delete($id);
+            $this->category->delete($id);
             http_response_code(200);
             echo json_encode(
                 [   "success" => true,
