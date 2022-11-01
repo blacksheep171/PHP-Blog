@@ -93,11 +93,11 @@ class UserRepository extends User {
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 return $result;
             } else {
-                return [];
+                return null;
             }
         } catch(Exception $e){
             Log::logError($e->getMessage());
-            return [];
+            return null;
         }
     }
 

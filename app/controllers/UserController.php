@@ -7,12 +7,19 @@ use App\Core\Controller;
 use App\Models\User as User;
 use App\Models\Gallery as Gallery;
 use App\Helpers\Log as Log;
+use App\Http\Response as Response;
 use App\Models\Repository\UserRepository as UserRepository;
 use App\Models\Repository\GalleryRepository as GalleryRepository;
-use PHP_CodeSniffer\Generators\HTML;
 
 class UserController extends Controller
-{   
+{      
+    /**
+     * declare user variables
+     * @param string
+     * @return Response
+     */
+    public $response;
+
     /**
      * declare user variables
      * @param string
@@ -29,9 +36,9 @@ class UserController extends Controller
 
     public function __construct()
     {   
+        $this->response = new Response();
         $this->user = new UserRepository();
         $this->image = new GalleryRepository();
-        header('Content-type: application/json');
     }
 
     // public function handlePage($page)
@@ -44,31 +51,16 @@ class UserController extends Controller
         $data = $this->user->index();
 
         if (!empty($data)) {
-            http_response_code(200);
-            header('Content-type: application/json');
-            echo json_encode(
-                [
-                    "success" => true,
-                    "message" => "success",
-                    "code" => 200,
-                    "data" => $data
-            ]
-            );
+            $user = $this->response->sendWithCode(true, 200,'success', $data);
+            
         } else {
-            http_response_code(404);
-            echo json_encode(
-                [   "success" => false,
-                    "message" => "not found",
-                    "code" => 404,
-                    "data" => null
-            ]
-            );
+            $user = $this->response->sendWithCode(false, 404,'not found', $data);
         }
+        return $this->response->responses($user);
     }
 
     public function login()
     {
-
         $email = htmlentities($_POST['email']);
         $password = htmlentities($_POST['password']);
 
@@ -83,26 +75,13 @@ class UserController extends Controller
                     'created_at' => $validator['created_at'],
                     'updated_at' => $validator['updated_at'],
                 ];
-                http_response_code(200);
-                header('Content-type: application/json');
-                echo json_encode(
-                    [
-                        "success" => true,
-                        "message" => "Login successfully.",
-                        "code" => 200,
-                        "data" => $data
-                ]
-                );
+
+                $user = $this->response->sendWithCode(true, 200,'Login successfully!', $data);
+
             } else {
-                http_response_code(500);
-                echo json_encode(
-                    [   "success" => false,
-                        "message" => "Incorrect Email or Password, please try again.",
-                        "code" => 500,
-                        "data" => null
-                ]
-                );
+                $user = $this->response->sendWithCode(true, 200,'Incorrect Email or Password, please try again.', null);
             }
+            return $this->response->responses($user);
         }
     }
 
@@ -121,48 +100,24 @@ class UserController extends Controller
         $data = $this->user->create($input);
 
         if ($data) {
-            http_response_code(201);
-            echo json_encode(
-                [   "success" => true,
-                    "message" => "Created successfully.",
-                    "code" => 201,
-                    "data" => $data
-            ]
-            );
+            $user = $this->response->sendWithCode(true, 201,'Created successfully.', $data);
         } else {
-            http_response_code(500);
-            return json_encode([
-                "success" => false,
-                "message" => "Users could not be created.",
-                "code" => 500,
-                "data" => $data
-            ]);
+            $user = $this->response->sendWithCode(true, 500,'Users could not be created.', null);
         }
+        return $this->response->responses($user);
     }
 
     public function getUser($id)
     {
         $data = $this->user->getUser($id);
 
-        if (empty($data)) {
-            http_response_code(404);
-            echo json_encode(
-                [   "success" => false,
-                    "message" => "not found",
-                    "code" => 404,
-                    "data" => null
-            ]
-            );
+        if (!empty($data)) {
+            $user = $this->response->sendWithCode(true, 200,'success', $data);
+            
         } else {
-            http_response_code(200);
-            echo json_encode(
-                [   "success" => true,
-                    "message" => "success",
-                    "code" => 200,
-                    "data" => $data
-            ]
-            );
+            $user = $this->response->sendWithCode(false, 404,'not found', null);
         }
+        return $this->response->responses($user);
     }
 
     public function updateUser($id)
@@ -171,14 +126,7 @@ class UserController extends Controller
         $oldData = $this->user->get($id);
 
         if (empty($oldData)) {
-            http_response_code(404);
-            echo json_encode(
-                [   "success" => false,
-                    "message" => "not found",
-                    "code" => 404,
-                    "data" => null
-            ]
-            );
+            $user = $this->response->sendWithCode(false, 404,'not found', null);
         } else {
             $input->setFullName(htmlentities($_POST['full_name']));
             $input->setEmail(htmlentities($_POST['email']));
@@ -190,25 +138,13 @@ class UserController extends Controller
             $data = $this->user->update($input);
 
             if ($data) {
-                http_response_code(200);
-                echo json_encode(
-                    [   "success" => true,
-                        "message" => "updated successfully.",
-                        "code" => 200,
-                        "data" => $data
-                ]
-                );
+                $user = $this->response->sendWithCode(true, 200,'updated successfully.', $data);
             } else {
-                http_response_code(500);
-                echo json_encode(
-                    [   "success" => false,
-                        "message" => "users can not updated.",
-                        "code" => 500,
-                        "data" => null
-                ]
-                );
+                $user = $this->response->sendWithCode(false, 500,'updated failed.', $oldData);
             }
         }
+
+        return $this->response->responses($user);
     }
 
     public function deleteUser($id)
@@ -216,25 +152,12 @@ class UserController extends Controller
         $oldData = $this->user->get($id);
 
         if (empty($oldData)) {
-            http_response_code(404);
-            echo json_encode(
-                [   "success" => false,
-                    "message" => "not found",
-                    "code" => 404,
-                    "data" => null
-            ]
-            );
+            $user = $this->response->sendWithCode(false, 404,'not found', null);
         } else {
             $this->user->delete($id);
-            http_response_code(200);
-            echo json_encode(
-                [   "success" => true,
-                    "message" => "success",
-                    "code" => 200,
-                    "data" => null
-            ]
-            );
+            $user = $this->response->sendWithCode(true, 200,'delete successfully.',null);
         }
+        return $this->response->responses($user);   
     }
 
     public function changeUserPassword($id)
@@ -242,18 +165,13 @@ class UserController extends Controller
         $input = new User();
         $oldData = $this->user->get($id);
 
-        if (empty($oldData)) {
-            http_response_code(404);
-            echo json_encode(
-                [   "success" => false,
-                    "message" => "not found",
-                    "code" => 404,
-                    "data" => null
-            ]);
+        if (empty($oldData)) {  
+            $user = $this->response->sendWithCode(false, 404,'not found', null);
         } else {
             $dataPassword = $oldData['password'];
             $currentPassword = htmlentities($_POST['current_password']);
             $changePassword = htmlentities($_POST['change_password']);
+
             if(isset($currentPassword)){
                 if(password_verify($currentPassword,$dataPassword)){
                     $password = password_hash($changePassword, PASSWORD_DEFAULT);
@@ -263,6 +181,7 @@ class UserController extends Controller
                     $input->setUpdatedAt(date('Y-m-d H:i:s'));
 
                     $userData = $this->user->changePassword($input);
+
                     if ($userData) {
                         $data = [
                             'id' => $userData['id'],
@@ -270,41 +189,20 @@ class UserController extends Controller
                             'email' => $userData['email'],
                             'gender' => $userData['gender']
                         ];
-                        http_response_code(200);
-                        echo json_encode(
-                            [   "success" => true,
-                                "message" => "password changed successfully.",
-                                "code" => 200,
-                                "data" => $data
-                            ]);
+                        $user = $this->response->sendWithCode(true, 200,'password changed successfully.', $data);
+
                     } else {
-                            http_response_code(500);
-                            echo json_encode(
-                                [   "success" => false,
-                                    "message" => "password can not changed.",
-                                    "code" => 500,
-                                    "data" => null
-                            ]);
+                        $user = $this->response->sendWithCode(false, 500,'password can not changed.',null);
                     }
-                }   else {
-                    http_response_code(500);
-                    echo json_encode(
-                        [   "success" => false,
-                            "message" => "your current password does not matched.",
-                            "code" => 500,
-                            "data" => null
-                    ]);
+                } else {
+                    $user = $this->response->sendWithCode(false, 500,'your current password does not matched.',null);
                 }
             } else {
-                http_response_code(500);
-                echo json_encode(
-                    [   "success" => false,
-                        "message" => "password can not changed.",
-                        "code" => 500,
-                        "data" => null
-                ]);
+                $user = $this->response->sendWithCode(false, 500,'password can not changed.',null);
             }
         }
+
+        return $this->response->responses($user);
     }
 
 
@@ -355,24 +253,11 @@ class UserController extends Controller
                     'path' => $imageUrl
                 ];
             }
-            
-            http_response_code(200);
-            echo json_encode(
-                [   "success" => true,
-                    "message" => 'success',
-                    "code" => 200,
-                    "data" => $data
-            ]
-            );
+            $user = $this->response->sendWithCode(true, 200,'success', $data);
         } else {
-            http_response_code(404);
-            echo json_encode(
-                [   "success" => false,
-                    "message" => $error[0],
-                    "code" => 404,
-                    "data" => null
-            ]
-            );
+            $user = $this->response->sendWithCode(false, 404,$error[0], null);
         }
+
+        return $this->response->responses($user);   
     }
 }

@@ -75,20 +75,5 @@ class User {
     public function getUpdatedAt(){
         return $this->updatedAt;
     }
-
-    // // Change user password
-    // public function changePassword($id, $password){
-    //     $sql = "UPDATE ". $this->table ." SET `password` = :password WHERE `id` = :id";
-    //     $this->db->query($sql);
-    //     $this->db->bind(':id',$id);
-    //     if($password !== ''){
-    //         $this->db->bind(':password',$password);
-    //     }
-    //     if($this->db->execute()) {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
 }
 ?>

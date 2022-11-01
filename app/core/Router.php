@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Response;
 class Router {
 
     private static $routers = [];
@@ -7,7 +8,7 @@ class Router {
     protected $params = [];
 
     function __construct(){
-
+        $this->response = new Response();
     }
 
     public static function getPathInfo($path){
@@ -80,7 +81,7 @@ class Router {
             } else {
                 $routeParams = explode("/", $url);
                 $requestParams = explode("/", $requestURL);
-                // compare count of routes and request params 
+                // execute comparison  by count of routes and request params 
                 if( count($routeParams) !== count($requestParams)) {
                     continue;
                 }
@@ -117,7 +118,8 @@ class Router {
 
     private function compileRoute($action, $params){
         if(count(explode('@',$action)) !== 2){
-            die("router error");
+            // die("router error");
+            $this->sendNotFound();
         }
         $className = explode('@', $action)[0];
         $methodName = explode('@', $action)[1];
@@ -127,10 +129,12 @@ class Router {
             if(method_exists($classNameSpace, $methodName)){
                 call_user_func_array([$object, $methodName], $params);
             } else {
-                die('Method "'.$methodName.'" not found');
+                $this->sendNotFound();
+                // die('Method "'.$methodName.'" not found');
             }
         } else {
-            die('Class "'.$className.'" not found');
+            $this->sendNotFound();
+            // die('Class "'.$className.'" not found');
         }
     }
 
@@ -147,4 +151,9 @@ class Router {
         }
         return $namespace;
     }
+
+    private function sendNotFound() {
+		$this->response->sendStatus(404);
+		$this->response->setContent(['error' => 'Sorry This Route Not Found !', 'status_code' => 404]);
+	}
 }
