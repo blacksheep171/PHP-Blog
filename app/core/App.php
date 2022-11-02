@@ -7,7 +7,7 @@ class App {
     private $router;
     
     public static $config;
-
+    
     function __construct()
     {   
         new Autoload(self::$config['rootDir']);

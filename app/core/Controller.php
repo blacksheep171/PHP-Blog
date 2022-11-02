@@ -3,9 +3,19 @@ namespace App\Core;
 
 require_once "./vendor/autoload.php";
 
+use App\Http\Request;
 use App\Http\Response;
 
 class Controller {
+
+
+    /**
+     * Request Class.
+     * @param string
+     * @return Request
+     * 
+     */
+    public $request;
 
     /**
      * Response Class.
@@ -17,6 +27,7 @@ class Controller {
 
     public function __construct(Response $response) {
         $this->response = $response;
+        $this->request = $GLOBALS['request'];
     }
     public function view($view, $data=[]){
             require_once "./App/Views/".$view.".php";
