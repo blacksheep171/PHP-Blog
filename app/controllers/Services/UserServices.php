@@ -5,6 +5,7 @@ use App;
 use App\Models\User as User;
 use App\Models\Gallery as Gallery;
 use App\Helpers\Log as Log;
+use App\Helpers\Helper as Helper;
 // use App\Http\Request as Request;
 use App\Http\Response as Response;
 use App\Models\Repository\UserRepository as UserRepository;
@@ -195,13 +196,13 @@ class UserServices {
     public function upload()
     {
         $input = new Gallery();
-        $targetDir = 'public/uploads';
-        $targetFile = $targetDir.basename($_FILES["fileToUpload"]["name"]);
+        $targetDir = 'public/uploads/';
+        $targetFile = Helper::cleanUrl($targetDir.basename($_FILES["fileToUpload"]["name"]));
         $fileName = $_FILES['fileToUpload']['name'];
         $filePath = $_FILES['fileToUpload']['tmp_name'];
         $fileSize = $_FILES['fileToUpload']['size'];
         $error = [];
-        $imageUrl = App::getConfig()['basePath'].$targetFile;
+        $imageUrl = Helper::cleanUrl(App::getConfig()['basePath'].$targetFile);
 
         if (empty($fileName)) {
             $error[] = 'please select an images';

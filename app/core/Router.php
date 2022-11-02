@@ -7,6 +7,13 @@ class Router {
 
     protected $params = [];
 
+     /**
+     * declare user variables
+     * @param string
+     * @return Response
+     */
+    public $response;
+
     function __construct(){
         $this->response = new Response();
     }
@@ -153,7 +160,7 @@ class Router {
     }
 
     private function sendNotFound() {
-		$this->response->sendStatus(404);
-		$this->response->setContent(['error' => 'Sorry This Route Not Found !', 'status_code' => 404]);
+		$data = $this->response->sendWithCode(false, 404,'not found', null);
+        return $this->response->responses($data);
 	}
 }
