@@ -44,7 +44,7 @@ class CommentServices {
             $comment = $this->response->sendWithCode(true, 200,'success', $data);
             
         } else {
-            $comment = $this->response->sendWithCode(false, 404,'not found', $data);
+            $comment = $this->response->sendWithCode(false, 400,'no result found', $data);
         }
 
         return $this->response->responses($comment);
@@ -69,7 +69,7 @@ class CommentServices {
                 $comment = $this->response->sendWithCode(true, 201,'created successfully.', $data);
             }
         } else {
-            $comment = $this->response->sendWithCode(false, 404,'created failed.', null);
+            $comment = $this->response->sendWithCode(false, 500,'created failed.', null);
         }
 
         return $this->response->responses($comment);
@@ -80,7 +80,7 @@ class CommentServices {
         $data = $this->_commentRepository->get($id);
 
         if (empty($data)) {
-            $comment = $this->response->sendWithCode(false, 404,'not found', null);
+            $comment = $this->response->sendWithCode(false, 400,'no result found', null);
         } else {
             $comment = $this->response->sendWithCode(true, 200,'success', $data);
         }

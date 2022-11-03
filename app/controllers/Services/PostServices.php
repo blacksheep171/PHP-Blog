@@ -47,7 +47,7 @@ class PostServices {
             $post = $this->response->sendWithCode(true, 200,'success', $data);
             
         } else {
-            $post = $this->response->sendWithCode(false, 404,'not found', $data);
+            $post = $this->response->sendWithCode(false, 400,'no results found', $data);
         }
 
         return $this->response->responses($post);
@@ -71,7 +71,7 @@ class PostServices {
         if ($data) {  
             $post = $this->response->sendWithCode(true, 201,'created successfully.', $data);
         } else {
-            $post = $this->response->sendWithCode(false, 404,'created failed', null);
+            $post = $this->response->sendWithCode(false, 500,'created failed', null);
         }
 
         return $this->response->responses($post);
@@ -85,7 +85,7 @@ class PostServices {
             $post = $this->response->sendWithCode(true, 200,'success', $data);
             
         } else {
-            $post = $this->response->sendWithCode(false, 404,'not found', null);
+            $post = $this->response->sendWithCode(false, 400,'no result found', null);
         }
 
         return $this->response->responses($post);

@@ -128,7 +128,7 @@ class Request {
         } else {
             $data = Helper::clean($data);
         }
-
+        
         return $data;
     }
 }

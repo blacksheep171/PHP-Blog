@@ -42,7 +42,7 @@ class UserServices {
             $user = $this->response->sendWithCode(true, 200,'success', $data);
             
         } else {
-            $user = $this->response->sendWithCode(false, 404,'not found', $data);
+            $user = $this->response->sendWithCode(false, 400,'no result found', $data);
         }
         return $this->response->responses($user);
     }
@@ -67,7 +67,7 @@ class UserServices {
                 $user = $this->response->sendWithCode(true, 200,'Login successfully!', $data);
 
             } else {
-                $user = $this->response->sendWithCode(true, 200,'Incorrect Email or Password, please try again.', null);
+                $user = $this->response->sendWithCode(false, 500,'Incorrect Email or Password, please try again.', null);
             }
             return $this->response->responses($user);
         }
@@ -90,7 +90,7 @@ class UserServices {
         if ($data) {
             $user = $this->response->sendWithCode(true, 201,'Created successfully.', $data);
         } else {
-            $user = $this->response->sendWithCode(true, 500,'Users could not be created.', null);
+            $user = $this->response->sendWithCode(false, 500,'Users could not be created.', null);
         }
         return $this->response->responses($user);
     }
@@ -103,7 +103,7 @@ class UserServices {
             $user = $this->response->sendWithCode(true, 200,'success', $data);
             
         } else {
-            $user = $this->response->sendWithCode(false, 404,'not found', null);
+            $user = $this->response->sendWithCode(false, 400,'no result found', null);
         }
         return $this->response->responses($user);
     }
@@ -241,7 +241,7 @@ class UserServices {
             }
             $user = $this->response->sendWithCode(true, 200,'success', $data);
         } else {
-            $user = $this->response->sendWithCode(false, 404,$error[0], null);
+            $user = $this->response->sendWithCode(false, 500, $error[0], null);
         }
         
         return $this->response->responses($user);   

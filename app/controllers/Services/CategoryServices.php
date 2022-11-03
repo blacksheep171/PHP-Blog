@@ -45,7 +45,7 @@ class CategoryServices {
             $category = $this->response->sendWithCode(true, 200,'success', $data);
             
         } else {
-            $category = $this->response->sendWithCode(false, 404,'not found', null);
+            $category = $this->response->sendWithCode(false, 400,'no result found', null);
         }
 
         return $this->response->responses($category);
@@ -79,7 +79,7 @@ class CategoryServices {
             $category = $this->response->sendWithCode(true, 200,'success', $data);
             
         } else {
-            $category = $this->response->sendWithCode(false, 404,'not found', null);
+            $category = $this->response->sendWithCode(false, 400,'no result found', null);
         }
 
         return $this->response->responses($category);
@@ -100,7 +100,7 @@ class CategoryServices {
             if ($data) {
                 $category = $this->response->sendWithCode(true, 200,'updated successfully.', $data);
             } else {
-                $category = $this->response->sendWithCode(true, 200,'updated failed.', $oldData);
+                $category = $this->response->sendWithCode(false, 500,'updated failed.', $oldData);
             }
         }
 
