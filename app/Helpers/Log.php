@@ -4,7 +4,6 @@ namespace App\Helpers;
 
 class Log
 {
-
     public static function logError($message)
     {
         $logFile = "debug.log";

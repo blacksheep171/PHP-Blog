@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Helpers\Helper;
+
 class Request {
     /**
      *  Get COOKIE Super Global

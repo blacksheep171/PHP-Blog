@@ -10,6 +10,7 @@ class UserController extends Controller
 
     /**
      * declare user variables
+     * 
      * @param string
      * @return UserService
      */
